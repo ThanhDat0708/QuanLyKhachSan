@@ -589,7 +589,7 @@ body {
                                 <a class="nav-link active" aria-current="page" href="#">Phòng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Loại Phòng</a>
+                                <a class="nav-link" href="{{ route('admin.loaiphong.index') }}">Loại Phòng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Trạng Thái Phòng</a>
@@ -632,6 +632,11 @@ body {
                 </ul>   
         </div>
     </nav>
+
+    <!-- Nội dung trang sẽ hiển thị ở đây -->
+    <div class="main-content">
+        @yield('content')
+    </div>
 </body>
 
 </html>
