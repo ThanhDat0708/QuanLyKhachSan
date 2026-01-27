@@ -586,13 +586,13 @@ body {
                         </a>
                         <ul class="dropdown-menu">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Phòng</a>
+                                <a class="nav-link active" aria-current="page" href="">Phòng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.loaiphong.index') }}">Loại Phòng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Trạng Thái Phòng</a>
+                                <a class="nav-link" href="{{ route('admin.trangthaiphong.index') }}">Trạng Thái Phòng</a>
                             </li>
                         </ul>
                     </div>
