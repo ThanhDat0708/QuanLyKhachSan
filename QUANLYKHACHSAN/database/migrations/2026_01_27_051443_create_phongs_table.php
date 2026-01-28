@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('ma_phong')->unique();
             $table->string('ten_phong', 200)->nullable();
             $table->string('anh_phong', 200)->nullable();    
-            $table->integer('so_luong_giuong')->nullable();
+            $table->string('so_luong_giuong')->nullable();
             $table->decimal('gia_phong', 15, 2)->nullable();
             $table->string('mo_ta', 200)->nullable();  
             $table->foreignId('ma_loai_phong')->nullable()->constrained('loai_phongs', 'ma_loai_phong');

@@ -18,4 +18,14 @@ class Phong extends Model
         'ma_loai_phong',
         'ma_trang_thai',
     ];
+
+    public function loaiPhong()
+    {
+        return $this->belongsTo(LoaiPhong::class, 'ma_loai_phong', 'ma_loai_phong');
+    }
+
+    public function trangThaiPhong()
+    {
+        return $this->belongsTo(TrangThaiPhong::class, 'ma_trang_thai', 'ma_trang_thai');
+    }
 }

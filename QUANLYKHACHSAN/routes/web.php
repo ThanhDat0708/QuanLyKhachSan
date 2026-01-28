@@ -25,3 +25,12 @@ Route::prefix('/admin/trangthaiphong')->name('admin.trangthaiphong.')->group(fun
     Route::put('/{id}/update',[TrangThaiPhongController::class,'update'])->name('update');
     Route::delete('/{id}/destroy',[TrangThaiPhongController::class,'destroy'])->name('destroy');
 });
+//Phong
+Route::prefix('/admin/phong')->name('admin.phong.')->group(function(){
+    Route::get('/',[PhongController::class,'index'])->name('index');
+    Route::get('/create',[PhongController::class,'create'])->name('create');
+    Route::post('/store',[PhongController::class,'store'])->name('store');
+    Route::get('/{id}/edit',[PhongController::class,'edit'])->name('edit');
+    Route::put('/{id}/update',[PhongController::class,'update'])->name('update');
+    Route::delete('/{id}/destroy',[PhongController::class,'destroy'])->name('destroy');
+}); 

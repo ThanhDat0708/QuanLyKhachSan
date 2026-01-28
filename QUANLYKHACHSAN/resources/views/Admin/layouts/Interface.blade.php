@@ -571,7 +571,7 @@ body {
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                   <img src="{{ asset('img/logo.png') }}" alt="Logo" width="120" height="90"
+                   <img src="{{ asset('images/logo.png') }}" alt="Logo" width="120" height="90"
                     class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -586,7 +586,7 @@ body {
                         </a>
                         <ul class="dropdown-menu">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="">Phòng</a>
+                                <a class="nav-link active" aria-current="page" href="{{ route('admin.phong.index') }}">Phòng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.loaiphong.index') }}">Loại Phòng</a>
