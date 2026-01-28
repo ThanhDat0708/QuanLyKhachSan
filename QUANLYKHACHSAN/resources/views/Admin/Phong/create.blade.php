@@ -21,14 +21,14 @@
             </div>
             <div class="form-group">
                 <label for="so_luong_giuong">Số Lượng Giường:</label>
-                <input type="number" class="form-control" id="so_luong_giuong" name="so_luong_giuong" placeholder="Nhập số lượng giường...">
+                <input type="text" class="form-control" id="so_luong_giuong" name="so_luong_giuong" placeholder="Nhập số lượng giường...">
                 @error('so_luong_giuong')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="gia_phong">Giá Phòng:</label>
-                <input type="number" class="form-control" id="gia_phong" name="gia_phong" placeholder="Nhập giá phòng...">
+                <input type="text" class="form-control" id="gia_phong" name="gia_phong" placeholder="Nhập giá phòng...">
                 @error('gia_phong')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

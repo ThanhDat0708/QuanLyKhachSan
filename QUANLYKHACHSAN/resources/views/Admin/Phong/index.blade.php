@@ -23,7 +23,7 @@
         Tổng số phòng: {{ $phongs->total() }} | Trang hiện tại: {{ $phongs->currentPage() }}
     </div>
     
-    <table class="table table-bordered mt-3" style="background-color: white;">
+    <table class="table table-bordered mt-3">
         <thead style="background-color: #6366f1; color: white;">
             <tr>
                 <th>Mã Phòng</th>
@@ -39,15 +39,15 @@
         </thead>
         <tbody>
             @foreach($phongs as $phong)
-            <tr style="background-color: white !important; color: black !important;">
-                <td style="color: black !important;">{{ $phong->ma_phong }}</td>
+            <tr>
+                <td >{{ $phong->ma_phong }}</td>
                 <td style="color: black !important;">{{ $phong->ten_phong }}</td>
                 <td><img src="{{ asset('images/' . $phong->anh_phong) }}" alt="{{ $phong->ten_phong }}" width="100"></td>
-                <td style="color: black !important;">{{ $phong->so_luong_giuong }}</td>
-                <td style="color: black !important;">{{ number_format($phong->gia_phong, 0, ',', '.') }} VND</td>
-                <td style="color: black !important;">{{ $phong->mo_ta }}</td>
-                <td style="color: black !important;">{{ $phong->loaiPhong ? $phong->loaiPhong->ten_loai_phong : 'N/A' }}</td>
-                <td style="color: black !important;">{{ $phong->trangThaiPhong ? $phong->trangThaiPhong->ten_trang_thai : 'N/A' }}</td>
+                <td >{{ $phong->so_luong_giuong }}</td>
+                <td >{{ number_format($phong->gia_phong, 0, ',', '.') }} VND</td>
+                <td >{{ $phong->mo_ta }}</td>
+                <td >{{ $phong->loaiPhong ? $phong->loaiPhong->ten_loai_phong : 'N/A' }}</td>
+                <td >{{ $phong->trangThaiPhong ? $phong->trangThaiPhong->ten_trang_thai : 'N/A' }}</td>
             <td>
                 <a href="{{ route('admin.phong.edit', $phong->ma_phong) }}" class="btn btn-warning">Sửa</a>
                 <form action="{{ route('admin.phong.destroy', $phong->ma_phong) }}" method="POST" style="display:inline-block;">

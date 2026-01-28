@@ -30,8 +30,8 @@
         <tbody>
             @foreach ($loaiphongs as $loaiphong)
             <tr>
-                <td style="color: black !important; font-weight: bold;">{{ $loaiphong->ma_loai_phong }}</td>
-                <td style="color: black !important; font-weight: bold;">{{ $loaiphong->ten_loai_phong }}</td>   
+                <td>{{ $loaiphong->ma_loai_phong }}</td>
+                <td>{{ $loaiphong->ten_loai_phong }}</td>   
                 <td>
                     <a href="{{ route('admin.loaiphong.edit', $loaiphong->ma_loai_phong) }}" class="btn btn-warning">Sửa</a>
                     <form action="{{ route('admin.loaiphong.destroy', $loaiphong->ma_loai_phong) }}" method="POST" style="display:inline-block;">

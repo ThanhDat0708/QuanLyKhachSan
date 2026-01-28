@@ -40,7 +40,7 @@ class PhongController extends Controller
         $rules = [
             'ten_phong' => 'required|string|max:200',
             'anh_phong' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'so_luong_giuong' => 'nullable|integer',
+            'so_luong_giuong' => 'nullable|string|max:200',
             'gia_phong' => 'nullable|numeric',
             'mo_ta' => 'nullable|string|max:200',
             'ma_loai_phong' => 'nullable|exists:loai_phongs,ma_loai_phong',
@@ -96,9 +96,13 @@ class PhongController extends Controller
      */
     public function edit(string $id)
     {
-        $phong = Phong::find($id);
+        $phong = Phong::findOrFail($id);
+        $loaiPhongs = LoaiPhong::all();
+        $trangThaiPhongs = TrangThaiPhong::all();
         return view('admin.phong.edit')
-        ->with('phong', $phong);
+        ->with('phong', $phong)
+        ->with('loaiPhongs', $loaiPhongs)
+        ->with('trangThaiPhongs', $trangThaiPhongs);
     }
 
     /**
@@ -109,7 +113,7 @@ class PhongController extends Controller
         $rules = [
             'ten_phong' => 'required|string|max:200',
             'anh_phong' => 'nullable|string|max:200',
-            'so_luong_giuong' => 'nullable|integer',
+            'so_luong_giuong' => 'nullable|string|max:200',
             'gia_phong' => 'nullable|numeric',
             'mo_ta' => 'nullable|string|max:200',
             'ma_loai_phong' => 'nullable|exists:loai_phongs,ma_loai_phong',
@@ -121,7 +125,6 @@ class PhongController extends Controller
             'ten_phong.max' => 'Tên phòng không được vượt quá 200 ký tự.',
             'anh_phong.string' => 'Ảnh phòng phải là chuỗi ký tự.',
             'anh_phong.max' => 'Ảnh phòng không được vượt quá 200 ký tự.',
-            'so_luong_giuong.integer' => 'Số lượng giường phải là số nguyên.',
             'gia_phong.numeric' => 'Giá phòng phải là số.',
             'mo_ta.string' => 'Mô tả phải là chuỗi ký tự.',
             'mo_ta.max' => 'Mô tả không được vượt quá 200 ký tự.',

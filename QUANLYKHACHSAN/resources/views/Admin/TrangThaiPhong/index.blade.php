@@ -28,8 +28,8 @@
         <tbody>
             @foreach ($trangthaiphongs as $trangthaiphong)
             <tr>
-                <td style="color: black !important; font-weight: bold;">{{ $trangthaiphong->ma_trang_thai }}</td>
-                <td style="color: black !important; font-weight: bold;">{{ $trangthaiphong->ten_trang_thai }}</td>   
+                <td>{{ $trangthaiphong->ma_trang_thai }}</td>
+                <td>{{ $trangthaiphong->ten_trang_thai }}</td>   
                 <td>
                     <a href="{{ route('admin.trangthaiphong.edit', $trangthaiphong->ma_trang_thai) }}" class="btn btn-warning">Sửa</a>
                     <form action="{{ route('admin.trangthaiphong.destroy', $trangthaiphong->ma_trang_thai) }}" method="POST" style="display:inline-block;">
