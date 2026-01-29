@@ -48,4 +48,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relationship: User có một thông tin Khách hàng
+    public function khachHang()
+    {
+        return $this->hasOne(KhachHang::class, 'ma_tai_khoan', 'ma_tai_khoan');
+    }
 }

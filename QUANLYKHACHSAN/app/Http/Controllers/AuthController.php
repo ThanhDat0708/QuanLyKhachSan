@@ -12,7 +12,7 @@ class AuthController extends Controller
     // Hiển thị form đăng nhập
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('TaiKhoan.login');
     }
     
     // Xử lý đăng nhập
@@ -38,8 +38,8 @@ class AuthController extends Controller
                 // Admin và Lễ tân vào trang quản lý
                 return redirect()->intended('/dashboard')->with('success', 'Đăng nhập thành công!');
             } else {
-                // Khách hàng vào trang khách
-                return redirect()->intended('/khachhang/dashboard')->with('success', 'Đăng nhập thành công!');
+                // Khách hàng vào trang người dùng
+                return redirect()->intended('/nguoidung')->with('success', 'Đăng nhập thành công!');
             }
         }
         
@@ -51,7 +51,7 @@ class AuthController extends Controller
     // Hiển thị form đăng ký
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('TaiKhoan.register');
     }
     
     // Xử lý đăng ký

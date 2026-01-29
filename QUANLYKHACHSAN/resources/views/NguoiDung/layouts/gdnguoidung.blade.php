@@ -83,8 +83,21 @@
                                 <a class="nav-link btn btn-primary text-white" href="{{ route('dashboard') }}">Quản Lý</a>
                             </li>
                         @else
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-info text-white" href="{{ route('khachhang.dashboard') }}">Tài Khoản</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    👤 {{ auth()->user()->ten_tai_khoan }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('nguoidung.thongtin.show') }}">📋 Thông tin cá nhân</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('nguoidung.index') }}">🏠 Trang chủ</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">🚪 Đăng xuất</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
                     @else
