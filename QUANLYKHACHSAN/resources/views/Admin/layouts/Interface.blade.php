@@ -255,10 +255,10 @@ body {
                         </a>
                         <ul class="dropdown-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Đặt Phòng</a>
+                                <a class="nav-link" href="{{ route('admin.datphong.index') }}">Đặt Phòng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.trangthaidatphong.index') }}">Trạng Thái Đặt Phòng</a>
+                                <a class="nav-link" href="{{ route('admin.trangthaiDP.index') }}">Trạng Thái Đặt Phòng</a>
                             </li>
                         </ul>
                     </div>

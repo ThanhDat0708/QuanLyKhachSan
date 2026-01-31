@@ -14,7 +14,7 @@ class KhachHangController extends Controller
      */
     public function index()
     {
-        $khachhangs = KhachHang::with('user')->orderBy('created_at', 'desc')->paginate(6);
+        $khachhangs = KhachHang::orderBy('created_at', 'desc')->paginate(6);
         return view('Admin.khachhang.index')
         ->with('khachhangs', $khachhangs);
     }
@@ -35,28 +35,17 @@ class KhachHangController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'ten_tai_khoan' => 'required|string|max:255|unique:users,ten_tai_khoan',
-            'so_dien_thoai' => 'required|string|max:15|unique:users,so_dien_thoai',
-            'password' => 'required|string|min:6',
             'ho_ten' => 'required|string|max:255',
             'gioi_tinh' => 'nullable|string',
             'ngay_sinh' => 'nullable|date',
+            'so_dien_thoai' => 'required|string|max:10',
             'email' => 'nullable|email|max:255',
             'dia_chi' => 'nullable|string|max:500',
             'cccd' => 'nullable|string|max:20',
         ]);
 
-        // Tạo tài khoản user trước
-        $user = User::create([
-            'ten_tai_khoan' => $validated['ten_tai_khoan'],
-            'so_dien_thoai' => $validated['so_dien_thoai'],
-            'password' => Hash::make($validated['password']),
-            'vai_tro' => 'nguoi_dung',
-        ]);
-
         // Tạo thông tin khách hàng
         KhachHang::create([
-            'ma_tai_khoan' => $user->ma_tai_khoan,
             'ho_ten' => $validated['ho_ten'],
             'gioi_tinh' => $validated['gioi_tinh'] ?? null,
             'ngay_sinh' => $validated['ngay_sinh'] ?? null,
@@ -75,7 +64,7 @@ class KhachHangController extends Controller
      */
     public function edit($id)
     {
-        $khachhang = KhachHang::with('user')->findOrFail($id);
+        $khachhang = KhachHang::findOrFail($id);
         return view('Admin.khachhang.edit')
         ->with('khachhang', $khachhang);
     }

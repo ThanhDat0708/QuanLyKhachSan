@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\UserKhachHangController;
 use App\Http\Controllers\TrangThaiDatPhongController;
+use App\Http\Controllers\DatPhongController;
 
 Route::get('/', function () {
     return view('NguoiDung.layouts.gdnguoidung');
@@ -84,6 +85,15 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/{id}/edit', [TrangThaiDatPhongController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [TrangThaiDatPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [TrangThaiDatPhongController::class, 'destroy'])->name('destroy');
+    });
+    //DatPhong
+    Route::prefix('datphong')->name('datphong.')->group(function(){
+        Route::get('/', [DatPhongController::class, 'index'])->name('index');
+        Route::get('/create', [DatPhongController::class, 'create'])->name('create');
+        Route::post('/store', [DatPhongController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [DatPhongController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [DatPhongController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [DatPhongController::class, 'destroy'])->name('destroy');
     });
 });
 // ROUTES CHO NGƯỜI DÙNG (Khách hàng)

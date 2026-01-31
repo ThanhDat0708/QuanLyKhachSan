@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-center">Thêm Trạng Thái Đặt Phòng Mới</h1>
-        <form action="{{ route('admin.trangthaidatphong.store') }}" method="POST">
+        <form action="{{ route('admin.trangthaiDP.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="ten_trang_thai_dat_phong">Tên Trạng Thái Đặt Phòng:</label>

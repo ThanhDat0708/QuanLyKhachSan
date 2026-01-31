@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <h1 class="text-center">Chỉnh Sửa Trạng Thái Đặt Phòng</h1>
-        <form action="{{ route('admin.trangthaidatphong.update', $trangthaidatphong->ma_trang_thai_dat_phong) }}" method="POST">
+        <form action="{{ route('admin.trangthaiDP.update', $trangthaidatphong->ma_trang_thai_dat_phong) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group">    

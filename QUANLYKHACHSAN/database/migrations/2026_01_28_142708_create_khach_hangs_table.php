@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('khach_hangs', function (Blueprint $table) {
             $table->id('ma_khach_hang')->unique();
-            $table->string('ho_ten', 200)->nullable();
+            $table->string('ho_ten', 200);
             $table->string('gioi_tinh', 3)->nullable();
             $table->date('ngay_sinh')->nullable();
-            $table->string('so_dien_thoai', 10)->nullable();
+            $table->string('so_dien_thoai', 10);
             $table->string('dia_chi', 200)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('cccd', 12)->nullable();
-            $table->foreignId('ma_tai_khoan')->constrained('users', 'ma_tai_khoan');
             $table->timestamps();
         });
     }
