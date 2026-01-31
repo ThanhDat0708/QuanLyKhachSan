@@ -7,8 +7,8 @@ use App\Http\Controllers\PhongController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\UserKhachHangController;
+use App\Http\Controllers\TrangThaiDatPhongController;
 
-// Routes công khai (không cần đăng nhập)
 Route::get('/', function () {
     return view('NguoiDung.layouts.gdnguoidung');
 })->name('home');
@@ -19,7 +19,6 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-//* Routes yêu cầu đăng nhập *//
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard Admin - Chỉ admin và lễ tân
@@ -76,6 +75,15 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/{id}/edit', [KhachHangController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [KhachHangController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [KhachHangController::class, 'destroy'])->name('destroy');
+    });
+    //TrangThaiDatPhong
+    Route::prefix('trangthaiDP')->name('trangthaiDP.')->group(function(){
+        Route::get('/', [TrangThaiDatPhongController::class, 'index'])->name('index');
+        Route::get('/create', [TrangThaiDatPhongController::class, 'create'])->name('create');
+        Route::post('/store', [TrangThaiDatPhongController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [TrangThaiDatPhongController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [TrangThaiDatPhongController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [TrangThaiDatPhongController::class, 'destroy'])->name('destroy');
     });
 });
 // ROUTES CHO NGƯỜI DÙNG (Khách hàng)

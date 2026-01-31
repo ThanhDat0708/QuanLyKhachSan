@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('so_dien_thoai', 10)->nullable();
             $table->string('dia_chi', 200)->nullable();
             $table->string('email', 100)->nullable();
-            $table->string('cmnd', 12)->nullable();
+            $table->string('cccd', 12)->nullable();
             $table->foreignId('ma_tai_khoan')->constrained('users', 'ma_tai_khoan');
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ class KhachHang extends Model
         'so_dien_thoai',
         'dia_chi',
         'email',
-        'cmnd',
+        'cccd',
         'ma_tai_khoan',
     ];
 

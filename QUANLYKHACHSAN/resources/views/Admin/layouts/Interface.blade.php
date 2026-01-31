@@ -258,12 +258,12 @@ body {
                                 <a class="nav-link" href="#">Đặt Phòng</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Trạng Thái Đặt Phòng</a>
+                                <a class="nav-link" href="{{ route('admin.trangthaidatphong.index') }}">Trạng Thái Đặt Phòng</a>
                             </li>
                         </ul>
                     </div>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Khách Hàng</a>
+                        <a class="nav-link" href="{{ route('admin.khachhang.index') }}">Khách Hàng</a>
                     </li>
 
                     <li class="nav-item">
@@ -278,7 +278,12 @@ body {
                                 <a class="nav-link" href="{{ route('login') }}">Đăng Nhập</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Đăng Ký</a>
+                                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; padding: 0; text-align: left; width: 100%;">
+                                        Đăng Xuất
+                                    </button>
+                                </form>
                             </li>
                         </ul> 
                     </div>

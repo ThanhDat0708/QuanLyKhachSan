@@ -48,7 +48,7 @@
                                     </tr>
                                     <tr>
                                         <th>CMND/CCCD</th>
-                                        <td>{{ $khachhang->cmnd ?? 'Chưa cập nhật' }}</td>
+                                        <td>{{ $khachhang->cccd ?? 'Chưa cập nhật' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Ngày tạo</th>

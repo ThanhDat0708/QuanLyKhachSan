@@ -39,6 +39,7 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa loại phòng này không?')">Xóa</button>
                     </form>
+                </td>
             </tr>
             @endforeach
         </tbody>

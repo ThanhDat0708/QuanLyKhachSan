@@ -28,7 +28,8 @@ class UserKhachHangController extends Controller
         $user = Auth::user();
         $khachhang = $user->khachHang;
         
-        return view('NguoiDung.khachhang.edit', compact('khachhang'));
+        return view('NguoiDung.khachhang.edit')
+        ->with('khachhang', $khachhang);
     }
 
     /**
@@ -41,10 +42,11 @@ class UserKhachHangController extends Controller
         $rules = [
             'ho_ten' => 'required|string|max:200',
             'ngay_sinh' => 'nullable|date',
+            'gioi_tinh' => 'nullable|string|in:Nam,Nữ,Khác',
             'so_dien_thoai' => 'nullable|string|max:10',
-            'dia_chi' => 'nullable|string|max:200',
+            'diachi' => 'nullable|string|max:200',
             'email' => 'nullable|string|email|max:100',
-            'cmnd' => 'nullable|string|max:12',
+            'cccd' => 'nullable|string|max:12',
         ];
         
         $rules_messages = [
@@ -55,21 +57,21 @@ class UserKhachHangController extends Controller
             'so_dien_thoai.max' => 'Số điện thoại không được vượt quá 10 ký tự.',
             'email.email' => 'Email không đúng định dạng.',
             'email.max' => 'Email không được vượt quá 100 ký tự.',
-            'cmnd.max' => 'CMND không được vượt quá 12 ký tự.',
+            'cccd.max' => 'CCCD không được vượt quá 12 ký tự.',
         ];
         
         $request->validate($rules, $rules_messages);
         
-        $data = $request->only([
-            'ho_ten',
-            'ngay_sinh',
-            'so_dien_thoai',
-            'dia_chi',
-            'email',
-            'cmnd',
-        ]);
-        
-        $data['ma_tai_khoan'] = $user->ma_tai_khoan;
+        $data = [
+            'ho_ten' => $request->ho_ten,
+            'gioi_tinh' => $request->gioi_tinh,
+            'ngay_sinh' => $request->ngay_sinh,
+            'so_dien_thoai' => $request->so_dien_thoai,
+            'dia_chi' => $request->diachi,
+            'email' => $request->email,
+            'cccd' => $request->cccd,
+            'ma_tai_khoan' => $user->ma_tai_khoan,
+        ];
         
         // Nếu đã có thông tin thì update, chưa có thì tạo mới
         if ($user->khachHang) {

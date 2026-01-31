@@ -5,8 +5,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Danh Sách Khách Hàng</h3>
+                        <h3 class="card-title">Danh Sách Trạng Thái Đặt Phòng</h3>
                     </div>
+
                     <div class="card-body">
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -23,50 +24,37 @@
                             </div>
                         @endif
 
-                        <a href="{{ route('admin.khachhang.create') }}" class="btn btn-primary mb-3">Thêm Khách Hàng Mới</a>
+                        <a href="{{ route('admin.trangthaidatphong.create') }}" class="btn btn-primary mb-3">Thêm Trạng Thái Đặt Phòng Mới</a>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Mã Khách Hàng</th>
-                                    <th>Tên Khách Hàng</th>
-                                    <th>Ngày Sinh</th>
-                                    <th>Giới Tính</th>
-                                    <th>Số Điện Thoại</th>
-                                    <th>Địa Chỉ</th>
-                                    <th>Căn Cước Công Dân</th>
-                                    <th>Email</th>
+                                    <th>Mã Trạng Thái Đặt Phòng</th>
+                                    <th>Tên Trạng Thái Đặt Phòng</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($khachhangs as $khachhang)
+                                @foreach ($trangthaidatphongs as $trangthaidatphong)
                                     <tr>
-                                        <td>{{ $khachhang->ma_khach_hang }}</td>
-                                        <td>{{ $khachhang->ho_ten }}</td>
-                                        <td>{{ $khachhang->ngay_sinh }}</td>
-                                        <td>{{ $khachhang->gioi_tinh }}</td>
-                                        <td>{{ $khachhang->so_dien_thoai }}</td>
-                                        <td>{{ $khachhang->dia_chi }}</td>
-                                        <td>{{ $khachhang->cccd }}</td>
-                                        <td>{{ $khachhang->email }}</td>
+                                        <td>{{ $trangthaidatphong->ma_trang_thai_dat_phong }}</td>
+                                        <td>{{ $trangthaidatphong->ten_trang_thai_dat_phong }}</td>
                                         <td>
-                                            <a href="{{ route('admin.khachhang.edit', $khachhang->ma_khach_hang) }}"
+                                            <a href="{{ route('admin.trangthaidatphong.edit', $trangthaidatphong->ma_trang_thai_dat_phong) }}"
                                                 class="btn btn-warning">Sửa</a>
                                             <form
-                                                action="{{ route('admin.khachhang.destroy', $khachhang->ma_khach_hang) }}"
+                                                action="{{ route('admin.trangthaidatphong.destroy', $trangthaidatphong->ma_trang_thai_dat_phong) }}"
                                                 method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?')">Xóa</button>
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa trạng thái đặt phòng này không?')">Xóa</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
-                        {{ $khachhangs->links() }}
+                        {{ $trangthaidatphongs->links() }}
                     </div>
                 </div>
             </div>
