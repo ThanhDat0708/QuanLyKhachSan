@@ -15,12 +15,25 @@ class SuDungDichVu extends Model
         'ma_dich_vu',
         'so_luong',
         'don_gia',
+        'thanh_tien',
         'ngay_su_dung',
     ];
 
     protected $casts = [
         'ngay_su_dung' => 'datetime',
     ];
+
+    /**
+     * Boot method để tự động tính thanh_tien khi tạo hoặc update
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->thanh_tien = $model->so_luong * $model->don_gia;
+        });
+    }
 
     public function dichVu()
     {

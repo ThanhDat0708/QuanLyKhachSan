@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('su_dung_dich_vus', function (Blueprint $table) {
-            $table->id('ma_sd_dich_vu')->unique();
+        Schema::create('hoa_dons', function (Blueprint $table) {
+            $table->id('ma_hoa_don')->unique();
             $table->foreignId('ma_dat_phong')->constrained('dat_phongs','ma_dat_phong')->onDelete('cascade');
-            $table->foreignId('ma_dich_vu')->constrained('dich_vus','ma_dich_vu')->onDelete('cascade');
-            $table->integer('so_luong')->default(1);
-            $table->decimal('don_gia', 15, 2);
-            $table->decimal('thanh_tien', 15, 2)->default(0);
-            $table->dateTime('ngay_su_dung')->default(now());
+            $table->decimal('tong_tien_phong', 15, 2)->default(0);
+            $table->decimal('tong_tien_dich_vu', 15, 2)->default(0);
+            $table->decimal('tong_tien_thanh_toan', 15, 2)->default(0);
+            $table->dateTime('ngay_lap_hoa_don')->default(now());
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('su_dung_dich_vus');
+        Schema::dropIfExists('hoa_dons');
     }
 };

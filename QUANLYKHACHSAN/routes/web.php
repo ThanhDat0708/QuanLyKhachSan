@@ -115,6 +115,15 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::put('/{id}/update', [SuDungDichVuController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [SuDungDichVuController::class, 'destroy'])->name('destroy');
     });
+    //HoaDon
+    Route::prefix('hoadon')->name('hoadon.')->group(function(){
+        Route::get('/', [HoaDonController::class, 'index'])->name('index');
+        Route::get('/create', [HoaDonController::class, 'create'])->name('create');
+        Route::post('/store', [HoaDonController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [HoaDonController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [HoaDonController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [HoaDonController::class, 'destroy'])->name('destroy');
+    });
 });
 // ROUTES CHO NGƯỜI DÙNG (Khách hàng)
 Route::middleware(['role:nguoi_dung'])->prefix('/nguoidung')->name('nguoidung.')->group(function () {
