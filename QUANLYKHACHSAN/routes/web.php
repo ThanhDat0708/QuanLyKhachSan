@@ -9,6 +9,8 @@ use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\UserKhachHangController;
 use App\Http\Controllers\TrangThaiDatPhongController;
 use App\Http\Controllers\DatPhongController;
+use App\Http\Controllers\DichVuController;
+use App\Http\Controllers\SuDungDichVuController;
 
 Route::get('/', function () {
     return view('NguoiDung.layouts.gdnguoidung');
@@ -94,6 +96,24 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/{id}/edit', [DatPhongController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [DatPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [DatPhongController::class, 'destroy'])->name('destroy');
+    });
+    //DichVu
+    Route::prefix('dichvu')->name('dichvu.')->group(function(){
+        Route::get('/', [DichVuController::class, 'index'])->name('index');
+        Route::get('/create', [DichVuController::class, 'create'])->name('create');
+        Route::post('/store', [DichVuController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [DichVuController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [DichVuController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [DichVuController::class, 'destroy'])->name('destroy');
+});
+    //SuDungDichVu
+    Route::prefix('sudungdichvu')->name('sudungdichvu.')->group(function(){
+        Route::get('/', [SuDungDichVuController::class, 'index'])->name('index');
+        Route::get('/create', [SuDungDichVuController::class, 'create'])->name('create');
+        Route::post('/store', [SuDungDichVuController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SuDungDichVuController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [SuDungDichVuController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [SuDungDichVuController::class, 'destroy'])->name('destroy');
     });
 });
 // ROUTES CHO NGƯỜI DÙNG (Khách hàng)
