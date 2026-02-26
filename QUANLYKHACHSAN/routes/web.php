@@ -11,6 +11,7 @@ use App\Http\Controllers\TrangThaiDatPhongController;
 use App\Http\Controllers\DatPhongController;
 use App\Http\Controllers\DichVuController;
 use App\Http\Controllers\SuDungDichVuController;
+use App\Http\Controllers\HoaDonController;
 
 Route::get('/', function () {
     return view('NguoiDung.layouts.gdnguoidung');

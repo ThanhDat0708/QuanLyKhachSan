@@ -272,6 +272,9 @@ body {
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.sudungdichvu.index') }}">Dịch Vụ Sử Dụng</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.hoadon.index') }}">Hóa Đơn</a>
+                    </li>
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown"role="button" data-bs-toggle="dropdown"aria-expanded="false">
                             Tài Khoản
