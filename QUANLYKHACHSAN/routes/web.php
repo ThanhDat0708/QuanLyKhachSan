@@ -121,6 +121,7 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/', [HoaDonController::class, 'index'])->name('index');
         Route::get('/create', [HoaDonController::class, 'create'])->name('create');
         Route::post('/store', [HoaDonController::class, 'store'])->name('store');
+        Route::get('/{id}/show', [HoaDonController::class, 'show'])->name('show');
         Route::get('/{id}/edit', [HoaDonController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [HoaDonController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [HoaDonController::class, 'destroy'])->name('destroy');

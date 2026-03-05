@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\HoaDon;
 use App\Models\DatPhong;
+use App\Models\KhachHang;
+use App\Models\Phong;
+use App\Models\SuDungDichVu;
 use Illuminate\Http\Request;
 
 class HoaDonController extends Controller
@@ -13,10 +16,10 @@ class HoaDonController extends Controller
     public function index()
     {
         $hoadons = HoaDon::with(['datPhong.khachHang', 'datPhong.phong'])
-        ->orderBy('ma_hoa_don', 'desc')
-        ->paginate(6);
+            ->orderBy('ma_hoa_don', 'desc')
+            ->paginate(6);
         return view('admin.hoadon.index')
-        ->with('hoadons', $hoadons);
+            ->with('hoadons', $hoadons);
     }
 
     /**
@@ -24,9 +27,12 @@ class HoaDonController extends Controller
      */
     public function create()
     {
-        $datphongs = DatPhong::with(['khachHang', 'phong'])->get();
+        // Chỉ lấy đặt phòng chưa có hóa đơn
+        $datphongs = DatPhong::with(['khachHang', 'phong'])
+            ->doesntHave('hoaDon')
+            ->get();
         return view('admin.hoadon.create')
-        ->with('datphongs', $datphongs);
+            ->with('datphongs', $datphongs);
     }
 
     /**
@@ -43,6 +49,13 @@ class HoaDonController extends Controller
         ];
         $request->validate($rules, $rules_messages);
 
+        // Kiểm tra đặt phòng đã có hóa đơn chưa
+        $daCoHoaDon = HoaDon::where('ma_dat_phong', $request->ma_dat_phong)->exists();
+        if ($daCoHoaDon) {
+            return redirect()->back()
+                ->with('error', 'Đặt phòng này đã có hóa đơn.');
+        }
+
         // Lấy thông tin đặt phòng với quan hệ cần thiết
         $datPhong = DatPhong::with(['phong', 'suDungDichVus'])
             ->find($request->ma_dat_phong);
@@ -54,6 +67,7 @@ class HoaDonController extends Controller
 
         $hoadon = new HoaDon();
         $hoadon->ma_dat_phong = $request->ma_dat_phong;
+        $hoadon->ma_phong = $datPhong->ma_phong;
 
         // Tính toán tổng tiền phòng, tổng tiền dịch vụ và tổng tiền thanh toán
         $hoadon->tong_tien_phong = $datPhong->tinhTongTienPhong();
@@ -65,7 +79,6 @@ class HoaDonController extends Controller
 
         return redirect()->route('admin.hoadon.index')
             ->with('success', 'Hóa đơn đã được tạo thành công.');
-
     }
 
     /**
@@ -73,7 +86,15 @@ class HoaDonController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $hoadon = HoaDon::with([
+            'datPhong.khachHang',
+            'datPhong.phong.loaiPhong',
+            'datPhong.trangThaiDatPhong',
+            'datPhong.suDungDichVus.dichVu'
+        ])->findOrFail($id);
+
+        return view('admin.hoadon.show')
+            ->with('hoadon', $hoadon);
     }
 
     /**
@@ -84,8 +105,8 @@ class HoaDonController extends Controller
         $hoadon = HoaDon::with(['datPhong'])->findOrFail($id);
         $datphongs = DatPhong::with(['khachHang', 'phong'])->get();
         return view('admin.hoadon.edit')
-        ->with('hoadon', $hoadon)
-        ->with('datphongs', $datphongs);
+            ->with('hoadon', $hoadon)
+            ->with('datphongs', $datphongs);
     }
 
     /**
@@ -113,6 +134,7 @@ class HoaDonController extends Controller
 
         $hoadon = HoaDon::findOrFail($id);
         $hoadon->ma_dat_phong = $request->ma_dat_phong;
+        $hoadon->ma_phong = $datPhong->ma_phong;
 
         // Tính toán lại tổng tiền phòng, tổng tiền dịch vụ và tổng tiền thanh toán
         $hoadon->tong_tien_phong = $datPhong->tinhTongTienPhong();
@@ -134,6 +156,6 @@ class HoaDonController extends Controller
         $hoadon->delete();
 
         return redirect()->route('admin.hoadon.index')
-        ->with('success', 'Xóa hóa đơn thành công.');
+            ->with('success', 'Xóa hóa đơn thành công.');
     }
 }
