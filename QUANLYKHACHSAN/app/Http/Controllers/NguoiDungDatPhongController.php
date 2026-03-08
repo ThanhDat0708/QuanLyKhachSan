@@ -104,6 +104,17 @@ class NguoiDungDatPhongController extends Controller
             'ngay_tra_phong' => $request->ngay_tra_phong,
         ]);
 
+        // Cập nhật trạng thái phòng sang "Hết Phòng"
+        $trangThaiHetPhong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%hết%')
+            ->orWhere('ten_trang_thai', 'like', '%Hết%')
+            ->first();
+
+        if ($trangThaiHetPhong) {
+            $phong = Phong::find($request->ma_phong);
+            $phong->ma_trang_thai = $trangThaiHetPhong->ma_trang_thai;
+            $phong->save();
+        }
+
         return redirect()->route('nguoidung.datphong.lichsu')
             ->with('success', 'Đặt phòng thành công! Vui lòng chờ xác nhận từ khách sạn.');
     }

@@ -7,7 +7,7 @@
 {{-- Welcome --}}
 <div class="mb-4">
     <h4 class="fw-bold" style="color: #1e293b;">Xin chào, {{ auth()->user()->ten_tai_khoan }}!</h4>
-    <p class="text-muted mb-0">Chào mừng bạn quay trở lại Grand Hotel. Chúc bạn có trải nghiệm tuyệt vời.</p>
+    <p class="text-muted mb-0">Chào mừng bạn quay trở lại DNC Hotel Luxury Chúc bạn có trải nghiệm tuyệt vời khi đến với chúng tôi.</p>
 </div>
 
 {{-- Quick Actions --}}
@@ -124,7 +124,7 @@
     <div class="col-lg-6">
         <div class="card-modern h-100">
             <div class="p-4 border-bottom" style="border-color: #f1f5f9 !important;">
-                <h6 class="fw-bold mb-0" style="color:#1e293b;"><i class="fas fa-lightbulb text-warning me-2"></i>Hướng dẫn nhanh</h6>
+                <h6 class="fw-bold mb-0" style="color:#1e293b;"><i class="fas fa-lightbulb text-warning me-2"></i>Ghi chú dành cho khách hàng</h6>
             </div>
             <div class="p-4">
                 <div class="d-flex gap-3 mb-3 pb-3" style="border-bottom: 1px solid #f1f5f9;">
@@ -160,7 +160,7 @@
                     </div>
                     <div>
                         <div class="fw-semibold" style="color:#1e293b; font-size:.9rem;">Liên hệ hỗ trợ</div>
-                        <small class="text-muted">Hotline: <strong>1900-1234</strong> | Email: contact@grandhotel.vn</small>
+                        <small class="text-muted">Hotline: <strong>0939257838 - 02923798168</strong> | Email:NamCanThoDNC@dnchotel.vn</small>
                     </div>
                 </div>
             </div>
