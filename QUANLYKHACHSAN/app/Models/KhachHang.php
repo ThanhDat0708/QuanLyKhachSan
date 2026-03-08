@@ -17,7 +17,14 @@ class KhachHang extends Model
         'dia_chi',
         'email',
         'cccd',
+        'ma_tai_khoan',
     ];
+
+    // Relationship: 1 khách hàng thuộc về 1 tài khoản
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'ma_tai_khoan', 'ma_tai_khoan');
+    }
 
     // Relationship: 1 khách hàng có nhiều đặt phòng
     public function datPhongs()

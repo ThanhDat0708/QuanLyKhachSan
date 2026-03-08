@@ -66,15 +66,17 @@ class DatPhongController extends Controller
         ];
         $request->validate($rules, $rules_messages);
         
-        // Kiểm tra phòng có bị trùng lịch không
+        // Kiểm tra phòng có bị trùng lịch không (loại trừ đặt phòng đã hủy/hoàn tiền)
+        $trangThaiHuy = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%hoàn%')
+            ->pluck('ma_trang_thai_dat_phong')
+            ->toArray();
+
         $checkPhong = DatPhong::where('ma_phong', $request->ma_phong)
-            ->where(function($query) use ($request) {
-                $query->whereBetween('ngay_nhan_phong', [$request->ngay_nhan_phong, $request->ngay_tra_phong])
-                    ->orWhereBetween('ngay_tra_phong', [$request->ngay_nhan_phong, $request->ngay_tra_phong])
-                    ->orWhere(function($q) use ($request) {
-                        $q->where('ngay_nhan_phong', '<=', $request->ngay_nhan_phong)
-                          ->where('ngay_tra_phong', '>=', $request->ngay_tra_phong);
-                    });
+            ->whereNotIn('ma_trang_thai_dat_phong', $trangThaiHuy)
+            ->where(function ($query) use ($request) {
+                $query->where('ngay_nhan_phong', '<', $request->ngay_tra_phong)
+                      ->where('ngay_tra_phong', '>', $request->ngay_nhan_phong);
             })
             ->exists();
         

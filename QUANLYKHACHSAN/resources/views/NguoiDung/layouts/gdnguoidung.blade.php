@@ -3,224 +3,697 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khách Sạn - Trang Chủ</title>
+    <title>Khách Sạn - DNC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --gold: #d4a853;
+            --dark: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            overflow-x: hidden;
         }
-        .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0;
-            text-align: center;
+
+        /* ===== NAVBAR ===== */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            padding: 16px 0;
+            transition: all .35s ease;
         }
-        .hero-section h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
+
+        .top-navbar.scrolled {
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            padding: 10px 0;
+        }
+
+        .top-navbar .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-navbar .navbar-brand img {
+            height: 52px;
+            width: auto;
+            filter: brightness(1.1);
+            transition: all .35s ease;
+        }
+
+        .top-navbar .navbar-brand .brand-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            transition: color .35s ease;
+        }
+
+        .top-navbar .navbar-brand .brand-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: .65rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.55);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            transition: color .35s ease;
+        }
+
+        .top-navbar.scrolled .navbar-brand img {
+            filter: brightness(0.15);
+        }
+
+        .top-navbar.scrolled .navbar-brand .brand-text {
+            color: var(--dark);
+        }
+
+        .top-navbar.scrolled .navbar-brand .brand-sub {
+            color: #94a3b8;
+        }
+
+        .top-navbar.scrolled .navbar-brand { color: var(--dark); }
+        .top-navbar .nav-link { color: rgba(255,255,255,.85); font-weight: 500; font-size: .9rem; padding: 8px 16px !important; transition: color .2s; }
+        .top-navbar.scrolled .nav-link { color: #475569; }
+        .top-navbar .nav-link:hover { color: #fff; }
+        .top-navbar.scrolled .nav-link:hover { color: var(--primary); }
+
+        .btn-nav-login {
+            padding: 8px 22px;
+            border: 2px solid rgba(255,255,255,.5);
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: .85rem;
+            text-decoration: none;
+            transition: all .25s;
+        }
+        .btn-nav-login:hover { background: #fff; color: var(--dark); }
+        .top-navbar.scrolled .btn-nav-login { border-color: var(--primary); color: var(--primary); }
+        .top-navbar.scrolled .btn-nav-login:hover { background: var(--primary); color: #fff; }
+
+        .btn-nav-register {
+            padding: 8px 22px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: .85rem;
+            text-decoration: none;
+            transition: all .25s;
+            box-shadow: 0 2px 8px rgba(79,70,229,.3);
+        }
+        .btn-nav-register:hover { background: var(--primary-light); color: #fff; transform: translateY(-1px); }
+
+        .navbar-toggler { border-color: rgba(255,255,255,.5); }
+        .navbar-toggler-icon { filter: brightness(0) invert(1); }
+        .top-navbar.scrolled .navbar-toggler { border-color: #cbd5e1; }
+        .top-navbar.scrolled .navbar-toggler-icon { filter: none; }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: #0f172a;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('{{ asset('images/dnc.jpg') }}');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: .55;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15,23,42,.7) 0%, rgba(30,41,59,.45) 50%, rgba(51,65,85,.3) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.15;
             margin-bottom: 20px;
         }
-        .hero-section p {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+
+        .hero p.lead {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,.65);
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 36px;
         }
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-weight: bold;
-            color: #667eea !important;
-            font-size: 1.5rem;
-        }
-        .feature-card {
-            padding: 30px;
-            border-radius: 10px;
-            transition: transform 0.3s;
-            height: 100%;
-        }
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .btn-custom {
-            padding: 12px 30px;
-            font-size: 1.1rem;
+
+        .btn-hero {
+            padding: 14px 36px;
             border-radius: 50px;
-            margin: 0 10px;
+            font-weight: 600;
+            font-size: .95rem;
+            transition: all .3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 50px;
+
+        .btn-hero-primary {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(79,70,229,.35);
+        }
+        .btn-hero-primary:hover { background: var(--primary-light); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,70,229,.4); }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,.3);
+        }
+        .btn-hero-outline:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.6); }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 56px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        .hero-stats .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .hero-stats .stat-item p {
+            color: rgba(255,255,255,.5);
+            font-size: .82rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section { padding: 100px 0; }
+
+        .section-header {
             text-align: center;
-            color: #333;
+            margin-bottom: 60px;
+        }
+
+        .section-header .section-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: rgba(79,70,229,.08);
+            color: var(--primary);
+            font-size: .78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .section-header p {
+            color: #64748b;
+            font-size: 1.05rem;
+            max-width: 540px;
+            margin: 12px auto 0;
+        }
+
+        /* Room Cards */
+        .room-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            transition: all .35s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .room-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,.1);
+        }
+
+        .room-card .room-img {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            background-color: #667eea;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .room-card .room-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .room-card .room-price {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,.65);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: .85rem;
+        }
+
+        .room-card .room-body {
+            padding: 22px;
+        }
+
+        .room-card .room-body h5 {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .room-card .room-features {
+            display: flex;
+            gap: 16px;
+            color: #64748b;
+            font-size: .82rem;
+            margin-top: 12px;
+        }
+
+        .room-card .room-features span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Service Cards */
+        .service-card {
+            text-align: center;
+            padding: 36px 24px;
+            border-radius: 16px;
+            background: #fff;
+            border: 1px solid #f1f5f9;
+            transition: all .3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            border-color: transparent;
+        }
+
+        .service-card .service-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 1.4rem;
+            color: #fff;
+        }
+
+        .service-card h5 {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .service-card p {
+            color: #64748b;
+            font-size: .88rem;
+            margin-bottom: 0;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+            flex-shrink: 0;
+        }
+
+        .contact-item p {
+            margin: 0;
+            font-size: .95rem;
+        }
+
+        .contact-item .label {
+            color: #94a3b8;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #0f172a;
+            padding: 32px 0;
+            text-align: center;
+            color: #64748b;
+            font-size: .85rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-up { animation: fadeInUp .8s ease forwards; }
+        .animate-up.d1 { animation-delay: .1s; }
+        .animate-up.d2 { animation-delay: .2s; }
+        .animate-up.d3 { animation-delay: .3s; }
+        .animate-up.d4 { animation-delay: .4s; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .section { padding: 60px 0; }
+            .section-header h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <nav class="top-navbar" id="topNavbar">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">🏨 KHÁCH SẠN</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rooms">Phòng</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Dịch Vụ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Liên Hệ</a>
-                    </li>
-                    @auth
-                        @if(auth()->user()->vai_tro == 'admin' || auth()->user()->vai_tro == 'le_tan')
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary text-white" href="{{ route('dashboard') }}">Quản Lý</a>
-                            </li>
+            <div class="d-flex align-items-center justify-content-between">
+                <a class="navbar-brand" href="{{ route('home') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="DNC Hotel">
+                    <div>
+                        <div class="brand-text">DNC Hotel</div>
+                        <div class="brand-sub">Luxury Resort</div>
+                    </div>
+                </a>
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+                    <ul class="navbar-nav align-items-center gap-1 ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#rooms">Phòng</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">Dịch vụ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
+                        @auth
+                            @if(auth()->user()->vai_tro == 'admin' || auth()->user()->vai_tro == 'le_tan')
+                                <li class="nav-item ms-2">
+                                    <a class="btn-nav-register" href="{{ route('dashboard') }}">
+                                        <i class="fas fa-gauge-high"></i> Quản lý
+                                    </a>
+                                </li>
+                            @else
+                                <li class="nav-item ms-2">
+                                    <a class="btn-nav-register" href="{{ route('nguoidung.index') }}">
+                                        <i class="fas fa-user"></i> {{ auth()->user()->ten_tai_khoan }}
+                                    </a>
+                                </li>
+                            @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                    👤 {{ auth()->user()->ten_tai_khoan }}
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('nguoidung.thongtin.show') }}">📋 Thông tin cá nhân</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('nguoidung.index') }}">🏠 Trang chủ</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <form action="{{ route('logout') }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item">🚪 Đăng xuất</button>
-                                        </form>
-                                    </li>
-                                </ul>
+                            <li class="nav-item ms-2">
+                                <a class="btn-nav-login" href="{{ route('login') }}">Đăng nhập</a>
                             </li>
-                        @endif
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-outline-primary" href="{{ route('login') }}">Đăng Nhập</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="nav-link btn btn-primary text-white" href="{{ route('register') }}">Đăng Ký</a>
-                        </li>
-                    @endauth
-                </ul>
+                            <li class="nav-item ms-1">
+                                <a class="btn-nav-register" href="{{ route('register') }}">Đăng ký</a>
+                            </li>
+                        @endauth
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <!-- Hero -->
+    <section class="hero">
         <div class="container">
-            <h1>Chào Mừng Đến Với Khách Sạn</h1>
-            <p>Trải nghiệm dịch vụ lưu trú đẳng cấp 5 sao</p>
-            <div>
-                <a href="#rooms" class="btn btn-light btn-custom">Xem Phòng</a>
-                <a href="{{ route('register') }}" class="btn btn-outline-light btn-custom">Đăng Ký Ngay</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rooms Section -->
-    <section id="rooms" class="py-5">
-        <div class="container">
-            <h2 class="section-title">Các Loại Phòng</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card feature-card">
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Phòng Standard">
-                        <div class="card-body">
-                            <h5 class="card-title">Phòng Standard</h5>
-                            <p class="card-text">Phòng tiêu chuẩn với đầy đủ tiện nghi cơ bản</p>
-                            <p class="text-primary fw-bold">Từ 500.000 VNĐ/đêm</p>
-                            <a href="{{ route('login') }}" class="btn btn-primary">Đặt Ngay</a>
-                        </div>
-                    </div>
+            <div class="hero-content">
+                <h1 class="animate-up d1">Nơi Nghỉ Dưỡng<br>Đẳng Cấp & Sang Trọng</h1>
+                <p class="lead animate-up d2">
+                    Tận hưởng không gian yên bình, tiện nghi hiện đại và dịch vụ tận tâm 
+                    cho kỳ nghỉ hoàn hảo của bạn.
+                </p>
+                <div class="d-flex gap-3 flex-wrap animate-up d3">
+                    @auth
+                        <a href="{{ auth()->user()->vai_tro == 'nguoi_dung' ? route('nguoidung.datphong.danhsach') : route('dashboard') }}" class="btn-hero btn-hero-primary">
+                            Đặt phòng ngay <i class="fas fa-arrow-right"></i>
+                        </a>
+                    @else
+                        <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">
+                            Đặt phòng ngay <i class="fas fa-arrow-right"></i>
+                        </a>
+                    @endauth
+                    <a href="#rooms" class="btn-hero btn-hero-outline">
+                        <i class="fas fa-play-circle"></i> Khám phá
+                    </a>
                 </div>
-                <div class="col-md-4">
-                    <div class="card feature-card">
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Phòng Deluxe">
-                        <div class="card-body">
-                            <h5 class="card-title">Phòng Deluxe</h5>
-                            <p class="card-text">Phòng cao cấp với view đẹp và không gian rộng rãi</p>
-                            <p class="text-primary fw-bold">Từ 800.000 VNĐ/đêm</p>
-                            <a href="{{ route('login') }}" class="btn btn-primary">Đặt Ngay</a>
-                        </div>
+                <div class="hero-stats animate-up d4">
+                    <div class="stat-item">
+                        <h3>50+</h3>
+                        <p>Phòng nghỉ</p>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card feature-card">
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Phòng Suite">
-                        <div class="card-body">
-                            <h5 class="card-title">Phòng Suite</h5>
-                            <p class="card-text">Phòng sang trọng nhất với đầy đủ tiện nghi 5 sao</p>
-                            <p class="text-primary fw-bold">Từ 1.500.000 VNĐ/đêm</p>
-                            <a href="{{ route('login') }}" class="btn btn-primary">Đặt Ngay</a>
-                        </div>
+                    <div class="stat-item">
+                        <h3>1000+</h3>
+                        <p>Khách hàng</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>4.9</h3>
+                        <p>Đánh giá</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>Hỗ trợ</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-5 bg-light">
+    <!-- Rooms -->
+    <section id="rooms" class="section">
         <div class="container">
-            <h2 class="section-title">Dịch Vụ Của Chúng Tôi</h2>
+            <div class="section-header">
+                <span class="section-badge">Phòng nghỉ</span>
+                <h2>Các Loại Phòng Nổi Bật</h2>
+                <p>Lựa chọn không gian phù hợp cho nhu cầu nghỉ dưỡng của bạn</p>
+            </div>
             <div class="row g-4">
-                <div class="col-md-3 text-center">
-                    <div class="feature-card bg-white">
-                        <div class="display-4 mb-3">🍽️</div>
+                <div class="col-md-4">
+                    <div class="room-card">
+                        <div class="room-img" style="background-image: url({{ asset('images/Vinpearl_cantho.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
+                            <span class="room-price">500.000đ / đêm</span>
+                        </div>
+                        <div class="room-body">
+                            <h5>Phòng View Thành Phố</h5>
+                            <p class="text-muted" style="font-size:.88rem;">Phòng này có một không gian rộng rãi với view thành phố tuyệt đẹp.</p>
+                            <div class="room-features">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="room-card">
+                        <div class="room-img" style="background-image: url({{ asset('images/viewbien.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
+                            <span class="room-price">800.000đ / đêm</span>
+                        </div>
+                        <div class="room-body">
+                            <h5>Phòng View Biển</h5>
+                            <p class="text-muted" style="font-size:.88rem;">Khu vực phòng có tầm nhìn ra biển tuyệt đẹp, mang lại cảm giác thư giãn tuyệt vời.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="room-card">
+                        <div class="room-img" style="background-image: url({{ asset('images/tongthong.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
+                            <span class="room-price">1.500.000đ / đêm</span>
+                        </div>
+                        <div class="room-body">
+                            <h5>Phòng Tổng Thống</h5>
+                            <p class="text-muted" style="font-size:.88rem;">Phòng này có đầy đủ tiện nghi cho sự đẳng cấp và quyền lực cho những khách hàng cao cấp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section" style="background: #f8fafc;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Tiện ích</span>
+                <h2>Dịch Vụ Của Chúng Tôi</h2>
+                <p>Mang đến cho bạn trải nghiệm trọn vẹn nhất</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="service-card">
+                        <div class="service-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-utensils"></i></div>
                         <h5>Nhà Hàng</h5>
-                        <p>Ẩm thực đa dạng</p>
+                        <p>Ẩm thực đa dạng, đạt chuẩn quốc tế</p>
                     </div>
                 </div>
-                <div class="col-md-3 text-center">
-                    <div class="feature-card bg-white">
-                        <div class="display-4 mb-3">🏊</div>
+                <div class="col-md-3 col-6">
+                    <div class="service-card">
+                        <div class="service-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-person-swimming"></i></div>
                         <h5>Bể Bơi</h5>
-                        <p>Hồ bơi ngoài trời</p>
+                        <p>Hồ bơi vô cực ngoài trời tuyệt đẹp</p>
                     </div>
                 </div>
-                <div class="col-md-3 text-center">
-                    <div class="feature-card bg-white">
-                        <div class="display-4 mb-3">💆</div>
-                        <h5>Spa</h5>
-                        <p>Massage & Thư giãn</p>
+                <div class="col-md-3 col-6">
+                    <div class="service-card">
+                        <div class="service-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);"><i class="fas fa-spa"></i></div>
+                        <h5>Spa & Wellness</h5>
+                        <p>Massage thư giãn, chăm sóc sức khỏe</p>
                     </div>
                 </div>
-                <div class="col-md-3 text-center">
-                    <div class="feature-card bg-white">
-                        <div class="display-4 mb-3">🅿️</div>
+                <div class="col-md-3 col-6">
+                    <div class="service-card">
+                        <div class="service-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-square-parking"></i></div>
                         <h5>Bãi Đỗ Xe</h5>
-                        <p>Miễn phí 24/7</p>
+                        <p>Miễn phí 24/7, an ninh đảm bảo</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-5">
-        <div class="container text-center">
-            <h2 class="section-title">Liên Hệ Với Chúng Tôi</h2>
-            <p class="lead">📞 Hotline: 1900-xxxx</p>
-            <p class="lead">📧 Email: contact@hotel.com</p>
-            <p class="lead">📍 Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</p>
+    <!-- Contact -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <span class="section-badge" style="background: rgba(129,140,248,.15); color: var(--primary-light);">Thông Tin Liên Hệ</span>
+                    <p class="text-secondary mb-0" style="color: #94a3b8 !important;">Đội ngũ nhân viên luôn sẵn sàng hỗ trợ bạn 24/7</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                                <div>
+                                    <p class="label">Hotline</p>
+                                    <p class="fw-semibold">0939257838 - 02923798168</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                                <div>
+                                    <p class="label">Email</p>
+                                    <p class="fw-semibold">NamCanThoDNC@dnchotel.vn</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
+                                <div>
+                                    <p class="label">Địa chỉ</p>
+                                    <p class="fw-semibold">Số 168, đường Nguyễn Văn Cừ nối dài, Phường Anh Bình,Quận Ninh Kiều, TP Cần Thơ.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-item">
+                                <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                                <div>
+                                    <p class="label">Giờ làm việc</p>
+                                    <p class="fw-semibold">24/7 — Cả tuần</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4">
+    <footer class="site-footer">
         <div class="container">
-            <p class="mb-0">&copy; 2026 Khách Sạn. All rights reserved.</p>
+            <p class="mb-0">&copy;DNC Hotel Luxury Resort</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('topNavbar');
+            nav.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
 </body>
 </html>
