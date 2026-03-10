@@ -446,7 +446,7 @@
                     <img src="{{ asset('images/logo.png') }}" alt="DNC Hotel">
                     <div>
                         <div class="brand-text">DNC Hotel</div>
-                        <div class="brand-sub">Luxury Resort</div>
+                        <div class="brand-sub">Hotel Luxury</div>
                     </div>
                 </a>
                 <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -500,7 +500,7 @@
                             Đặt phòng ngay <i class="fas fa-arrow-right"></i>
                         </a>
                     @else
-                        <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">
+                        <a href="{{ route('login') }}" class="btn-hero btn-hero-primary">
                             Đặt phòng ngay <i class="fas fa-arrow-right"></i>
                         </a>
                     @endauth

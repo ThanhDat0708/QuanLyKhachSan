@@ -59,9 +59,9 @@
                             @php
                                 $trangThai = $dp->trangThaiDatPhong->ten_trang_thai_dat_phong ?? 'N/A';
                                 $bg = 'rgba(100,116,139,.08)'; $cl = '#64748b';
-                                if (str_contains(mb_strtolower($trangThai), 'xác nhận') || str_contains(mb_strtolower($trangThai), 'nhận')) {
+                                if (str_contains(mb_strtolower($trangThai), 'đã xác nhận')) {
                                     $bg = 'rgba(16,185,129,.08)'; $cl = '#059669';
-                                } elseif (str_contains(mb_strtolower($trangThai), 'chờ')) {
+                                } elseif (str_contains(mb_strtolower($trangThai), 'chưa')) {
                                     $bg = 'rgba(245,158,11,.08)'; $cl = '#d97706';
                                 } elseif (str_contains(mb_strtolower($trangThai), 'hủy')) {
                                     $bg = 'rgba(239,68,68,.08)'; $cl = '#dc2626';
@@ -82,13 +82,25 @@
                                 <span class="badge-status" style="background:rgba(100,116,139,.06); color:#94a3b8;">Chưa</span>
                             @endif
                         </td>
-                        <td>
+                        <td class="d-flex gap-1 align-items-center">
                             <a href="{{ route('nguoidung.datphong.chitiet', $dp->ma_dat_phong) }}" 
                                 style="width:34px; height:34px; border-radius:8px; border:1px solid #e2e8f0; display:inline-flex; align-items:center; justify-content:center; color:#64748b; text-decoration:none; transition:all .2s;"
                                 onmouseover="this.style.borderColor='#818cf8'; this.style.color='#4f46e5';"
                                 onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b';">
                                 <i class="fas fa-eye" style="font-size:.8rem;"></i>
                             </a>
+                            @if(str_contains(mb_strtolower($dp->trangThaiDatPhong->ten_trang_thai_dat_phong ?? ''), 'chưa'))
+                            <form action="{{ route('nguoidung.datphong.huy', $dp->ma_dat_phong) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy đặt phòng này không?')">
+                                @csrf
+                                <button type="submit" 
+                                    style="width:34px; height:34px; border-radius:8px; border:1px solid #fecaca; display:inline-flex; align-items:center; justify-content:center; color:#dc2626; background:transparent; cursor:pointer; transition:all .2s;"
+                                    onmouseover="this.style.background='#fef2f2'; this.style.borderColor='#f87171';"
+                                    onmouseout="this.style.background='transparent'; this.style.borderColor='#fecaca';" 
+                                    title="Hủy đặt phòng">
+                                    <i class="fas fa-times" style="font-size:.8rem;"></i>
+                                </button>
+                            </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

@@ -165,6 +165,7 @@ Route::middleware(['role:nguoi_dung'])->prefix('/nguoidung')->name('nguoidung.')
         Route::post('/store', [NguoiDungDatPhongController::class, 'store'])->name('store');
         Route::get('/lichsu', [NguoiDungDatPhongController::class, 'lichSu'])->name('lichsu');
         Route::get('/{id}/chitiet', [NguoiDungDatPhongController::class, 'chiTiet'])->name('chitiet');
+        Route::post('/{id}/huy', [NguoiDungDatPhongController::class, 'huyDatPhong'])->name('huy');
     });
 });
 }); // Đóng middleware auth

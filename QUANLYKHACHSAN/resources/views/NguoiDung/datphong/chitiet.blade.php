@@ -12,9 +12,9 @@
 @php
     $trangThai = $datphong->trangThaiDatPhong->ten_trang_thai_dat_phong ?? 'N/A';
     $bg = 'rgba(100,116,139,.08)'; $cl = '#64748b';
-    if (str_contains(mb_strtolower($trangThai), 'xác nhận') || str_contains(mb_strtolower($trangThai), 'nhận')) {
+    if (str_contains(mb_strtolower($trangThai), 'đã xác nhận')) {
         $bg = 'rgba(16,185,129,.08)'; $cl = '#059669';
-    } elseif (str_contains(mb_strtolower($trangThai), 'chờ')) {
+    } elseif (str_contains(mb_strtolower($trangThai), 'chưa')) {
         $bg = 'rgba(245,158,11,.08)'; $cl = '#d97706';
     } elseif (str_contains(mb_strtolower($trangThai), 'hủy')) {
         $bg = 'rgba(239,68,68,.08)'; $cl = '#dc2626';
@@ -33,9 +33,21 @@
                 <small class="text-muted">Ngày đặt: {{ \Carbon\Carbon::parse($datphong->ngay_dat_phong)->format('d/m/Y H:i') }}</small>
             </div>
         </div>
-        <span class="badge-status" style="background:{{ $bg }}; color:{{ $cl }}; font-size:.82rem; padding:7px 16px;">
-            <i class="fas fa-circle" style="font-size:.4rem; vertical-align:middle; margin-right:5px;"></i>{{ $trangThai }}
-        </span>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge-status" style="background:{{ $bg }}; color:{{ $cl }}; font-size:.82rem; padding:7px 16px;">
+                <i class="fas fa-circle" style="font-size:.4rem; vertical-align:middle; margin-right:5px;"></i>{{ $trangThai }}
+            </span>
+            @if(str_contains(mb_strtolower($trangThai), 'chưa'))
+            <form action="{{ route('nguoidung.datphong.huy', $datphong->ma_dat_phong) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn hủy đặt phòng này không?')">
+                @csrf
+                <button type="submit" class="btn btn-sm" style="background:rgba(239,68,68,.08); color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-size:.82rem; padding:7px 16px; transition:all .2s;"
+                    onmouseover="this.style.background='#fef2f2'; this.style.borderColor='#f87171';"
+                    onmouseout="this.style.background='rgba(239,68,68,.08)'; this.style.borderColor='#fecaca';">
+                    <i class="fas fa-ban me-1"></i> Hủy đặt phòng
+                </button>
+            </form>
+            @endif
+        </div>
     </div>
 </div>
 

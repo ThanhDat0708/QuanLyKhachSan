@@ -96,6 +96,20 @@ class DatPhongController extends Controller
         ]);
         
         DatPhong::create($data);
+
+        // Cập nhật trạng thái phòng sang "Hết Phòng"
+        $trangThaiHetPhong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%hết%')
+            ->orWhere('ten_trang_thai', 'like', '%Hết%')
+            ->first();
+
+        if ($trangThaiHetPhong) {
+            $phong = Phong::find($request->ma_phong);
+            if ($phong) {
+                $phong->ma_trang_thai = $trangThaiHetPhong->ma_trang_thai;
+                $phong->save();
+            }
+        }
+
         return redirect()->route('admin.datphong.index')
         ->with('success', 'Đặt phòng đã được tạo thành công.');
     }
@@ -198,7 +212,34 @@ class DatPhongController extends Controller
     public function destroy(string $id)
     {
         $datphong = DatPhong::findOrFail($id);
+        $maPhong = $datphong->ma_phong;
         $datphong->delete();
+
+        // Kiểm tra phòng còn đặt phòng nào đang hoạt động không
+        $trangThaiHuyIds = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%hoàn%')
+            ->pluck('ma_trang_thai_dat_phong')
+            ->toArray();
+
+        $conDatPhongKhac = DatPhong::where('ma_phong', $maPhong)
+            ->whereNotIn('ma_trang_thai_dat_phong', $trangThaiHuyIds)
+            ->exists();
+
+        // Nếu không còn đặt phòng nào khác, chuyển phòng về "Trống"
+        if (!$conDatPhongKhac) {
+            $trangThaiTrong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+                ->orWhere('ten_trang_thai', 'like', '%Trống%')
+                ->first();
+
+            if ($trangThaiTrong) {
+                $phong = Phong::find($maPhong);
+                if ($phong) {
+                    $phong->ma_trang_thai = $trangThaiTrong->ma_trang_thai;
+                    $phong->save();
+                }
+            }
+        }
+
         return redirect()->route('admin.datphong.index')
         ->with('success', 'Đặt phòng đã được xóa thành công.');
     }

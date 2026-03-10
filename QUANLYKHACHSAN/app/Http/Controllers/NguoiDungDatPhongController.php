@@ -63,13 +63,12 @@ class NguoiDungDatPhongController extends Controller
                 ->with('error', 'Vui lòng cập nhật thông tin cá nhân trước khi đặt phòng.');
         }
 
-        // Lấy trạng thái "Chờ xác nhận" (hoặc trạng thái đầu tiên)
-        $trangThai = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%chờ%')
-            ->orWhere('ten_trang_thai_dat_phong', 'like', '%Chờ%')
-            ->first();
+        // Lấy trạng thái "Chưa Xác Nhận"
+        $trangThai = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%chưa%')->first();
 
         if (!$trangThai) {
-            $trangThai = TrangThaiDatPhong::first();
+            return redirect()->back()
+                ->with('error', 'Không tìm thấy trạng thái "Chưa Xác Nhận" trong hệ thống. Vui lòng liên hệ quản trị viên.');
         }
 
         // Kiểm tra phòng có bị trùng lịch không (loại trừ đặt phòng đã hủy/hoàn tiền)
@@ -162,5 +161,70 @@ class NguoiDungDatPhongController extends Controller
         ->findOrFail($id);
 
         return view('NguoiDung.datphong.chitiet', compact('datphong'));
+    }
+
+    /**
+     * Hủy đặt phòng
+     */
+    public function huyDatPhong($id)
+    {
+        $user = Auth::user();
+        $khachhang = $user->khachHang;
+
+        if (!$khachhang) {
+            return redirect()->route('nguoidung.datphong.lichsu')
+                ->with('error', 'Không tìm thấy thông tin khách hàng.');
+        }
+
+        $datphong = DatPhong::where('ma_khach_hang', $khachhang->ma_khach_hang)
+            ->findOrFail($id);
+
+        // Chỉ cho phép hủy khi trạng thái là "Chưa Xác Nhận"
+        $trangThaiHienTai = mb_strtolower($datphong->trangThaiDatPhong->ten_trang_thai_dat_phong ?? '');
+        if (!str_contains($trangThaiHienTai, 'chưa')) {
+            return redirect()->route('nguoidung.datphong.lichsu')
+                ->with('error', 'Chỉ có thể hủy đặt phòng khi đang ở trạng thái Chưa Xác Nhận.');
+        }
+
+        // Lấy trạng thái "Hủy"
+        $trangThaiHuy = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%Hủy%')
+            ->first();
+
+        if (!$trangThaiHuy) {
+            return redirect()->route('nguoidung.datphong.lichsu')
+                ->with('error', 'Không tìm thấy trạng thái hủy trong hệ thống.');
+        }
+
+        // Cập nhật trạng thái đặt phòng sang "Hủy"
+        $datphong->ma_trang_thai_dat_phong = $trangThaiHuy->ma_trang_thai_dat_phong;
+        $datphong->save();
+
+        // Kiểm tra xem phòng còn đặt phòng nào đang hoạt động không
+        $trangThaiHuyIds = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%hoàn%')
+            ->pluck('ma_trang_thai_dat_phong')
+            ->toArray();
+
+        $conDatPhongKhac = DatPhong::where('ma_phong', $datphong->ma_phong)
+            ->where('ma_dat_phong', '!=', $datphong->ma_dat_phong)
+            ->whereNotIn('ma_trang_thai_dat_phong', $trangThaiHuyIds)
+            ->exists();
+
+        // Nếu không còn đặt phòng nào khác, chuyển phòng về "Trống"
+        if (!$conDatPhongKhac) {
+            $trangThaiTrong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+                ->orWhere('ten_trang_thai', 'like', '%Trống%')
+                ->first();
+
+            if ($trangThaiTrong) {
+                $phong = Phong::find($datphong->ma_phong);
+                $phong->ma_trang_thai = $trangThaiTrong->ma_trang_thai;
+                $phong->save();
+            }
+        }
+
+        return redirect()->route('nguoidung.datphong.lichsu')
+            ->with('success', 'Hủy đặt phòng thành công!');
     }
 }
