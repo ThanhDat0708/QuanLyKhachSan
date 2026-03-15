@@ -14,6 +14,7 @@ use App\Http\Controllers\SuDungDichVuController;
 use App\Http\Controllers\HoaDonController;
 use App\Http\Controllers\DoanhThuController;
 use App\Http\Controllers\NguoiDungDatPhongController;
+use App\Http\Controllers\QuanLyTaiKhoanController;
 
 Route::get('/', function () {
     return view('NguoiDung.layouts.gdnguoidung');
@@ -83,6 +84,16 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::delete('/{id}/destroy', [SuDungDichVuController::class, 'destroy'])->name('destroy');
     });
 
+    //DichVu - Admin & Lễ tân đều truy cập được
+    Route::prefix('dichvu')->name('dichvu.')->group(function(){
+        Route::get('/', [DichVuController::class, 'index'])->name('index');
+        Route::get('/create', [DichVuController::class, 'create'])->name('create');
+        Route::post('/store', [DichVuController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [DichVuController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [DichVuController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [DichVuController::class, 'destroy'])->name('destroy');
+    });
+
     //HoaDon - Admin & Lễ tân đều truy cập được
     Route::prefix('hoadon')->name('hoadon.')->group(function(){
         Route::get('/', [HoaDonController::class, 'index'])->name('index');
@@ -93,12 +104,8 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::put('/{id}/update', [HoaDonController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [HoaDonController::class, 'destroy'])->name('destroy');
     });
-});
 
-// ROUTES CHỈ DÀNH CHO ADMIN
-Route::middleware(['role:admin'])->prefix('/admin')->name('admin.')->group(function () {
-    
-    //LoaiPhong - Chỉ Admin
+    //LoaiPhong - Admin & Lễ tân đều truy cập được
     Route::prefix('loaiphong')->name('loaiphong.')->group(function(){
         Route::get('/', [LoaiPhongController::class, 'index'])->name('index');
         Route::get('/create', [LoaiPhongController::class, 'create'])->name('create');
@@ -107,8 +114,8 @@ Route::middleware(['role:admin'])->prefix('/admin')->name('admin.')->group(funct
         Route::put('/{id}/update', [LoaiPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [LoaiPhongController::class, 'destroy'])->name('destroy');
     });
-    
-    //TrangThaiPhong - Chỉ Admin
+
+    //TrangThaiPhong - Admin & Lễ tân đều truy cập được
     Route::prefix('trangthaiphong')->name('trangthaiphong.')->group(function(){
         Route::get('/', [TrangThaiPhongController::class, 'index'])->name('index');
         Route::get('/create', [TrangThaiPhongController::class, 'create'])->name('create');
@@ -118,7 +125,7 @@ Route::middleware(['role:admin'])->prefix('/admin')->name('admin.')->group(funct
         Route::delete('/{id}/destroy', [TrangThaiPhongController::class, 'destroy'])->name('destroy');
     });
 
-    //TrangThaiDatPhong - Chỉ Admin
+    //TrangThaiDatPhong - Admin & Lễ tân đều truy cập được
     Route::prefix('trangthaiDP')->name('trangthaiDP.')->group(function(){
         Route::get('/', [TrangThaiDatPhongController::class, 'index'])->name('index');
         Route::get('/create', [TrangThaiDatPhongController::class, 'create'])->name('create');
@@ -127,20 +134,24 @@ Route::middleware(['role:admin'])->prefix('/admin')->name('admin.')->group(funct
         Route::put('/{id}/update', [TrangThaiDatPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [TrangThaiDatPhongController::class, 'destroy'])->name('destroy');
     });
+});
 
-    //DichVu - Chỉ Admin
-    Route::prefix('dichvu')->name('dichvu.')->group(function(){
-        Route::get('/', [DichVuController::class, 'index'])->name('index');
-        Route::get('/create', [DichVuController::class, 'create'])->name('create');
-        Route::post('/store', [DichVuController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [DichVuController::class, 'edit'])->name('edit');
-        Route::put('/{id}/update', [DichVuController::class, 'update'])->name('update');
-        Route::delete('/{id}/destroy', [DichVuController::class, 'destroy'])->name('destroy');
-    });
+// ROUTES CHỈ DÀNH CHO ADMIN
+Route::middleware(['role:admin'])->prefix('/admin')->name('admin.')->group(function () {
 
     //DoanhThu - Chỉ Admin
     Route::prefix('doanhthu')->name('doanhthu.')->group(function(){
         Route::get('/', [DoanhThuController::class, 'index'])->name('index');
+    });
+
+    //TaiKhoan - Chỉ Admin
+    Route::prefix('taikhoan')->name('taikhoan.')->group(function(){
+        Route::get('/', [QuanLyTaiKhoanController::class, 'index'])->name('index');
+        Route::get('/create', [QuanLyTaiKhoanController::class, 'create'])->name('create');
+        Route::post('/store', [QuanLyTaiKhoanController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [QuanLyTaiKhoanController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [QuanLyTaiKhoanController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [QuanLyTaiKhoanController::class, 'destroy'])->name('destroy');
     });
 });
 // ROUTES CHO NGƯỜI DÙNG (Khách hàng)

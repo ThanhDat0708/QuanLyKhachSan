@@ -311,8 +311,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
 
-                    @if(auth()->user()->vai_tro === 'admin')
-                    {{-- Admin: Quản Lý Phòng dropdown --}}
+                    @if(auth()->user()->vai_tro === 'admin' || auth()->user()->vai_tro === 'le_tan')
+                    {{-- Admin & Lễ tân: Quản Lý Phòng dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-hotel"></i> Quản Lý Phòng
@@ -323,14 +323,10 @@
                             <li><a class="dropdown-item" href="{{ route('admin.trangthaiphong.index') }}"><i class="fas fa-toggle-on"></i> Trạng Thái Phòng</a></li>
                         </ul>
                     </li>
-                    @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.phong.index') }}"><i class="fas fa-door-open"></i> Phòng</a>
-                    </li>
                     @endif
 
-                    @if(auth()->user()->vai_tro === 'admin')
-                    {{-- Admin: Quản Lý Đặt Phòng dropdown --}}
+                    @if(auth()->user()->vai_tro === 'admin' || auth()->user()->vai_tro === 'le_tan')
+                    {{-- Admin & Lễ tân: Quản Lý Đặt Phòng dropdown --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-calendar-check"></i> Đặt Phòng
@@ -340,21 +336,15 @@
                             <li><a class="dropdown-item" href="{{ route('admin.trangthaiDP.index') }}"><i class="fas fa-list-check"></i> Trạng Thái Đặt Phòng</a></li>
                         </ul>
                     </li>
-                    @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.datphong.index') }}"><i class="fas fa-calendar-check"></i> Đặt Phòng</a>
-                    </li>
                     @endif
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.khachhang.index') }}"><i class="fas fa-users"></i> Khách Hàng</a>
                     </li>
 
-                    @if(auth()->user()->vai_tro === 'admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.dichvu.index') }}"><i class="fas fa-concierge-bell"></i> Dịch Vụ</a>
                     </li>
-                    @endif
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.sudungdichvu.index') }}"><i class="fas fa-clipboard-list"></i> SD Dịch Vụ</a>
@@ -367,6 +357,9 @@
                     @if(auth()->user()->vai_tro === 'admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.doanhthu.index') }}"><i class="fas fa-chart-line"></i> Doanh Thu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.taikhoan.index') }}"><i class="fas fa-user-shield"></i>  Quản Lý Tài Khoản</a>
                     </li>
                     @endif
                 </ul>

@@ -72,9 +72,6 @@
             <span class="page-title">@yield('page-heading', 'Trang chủ')</span>
         </div>
         <div class="topbar-right">
-            <a href="{{ route('home') }}" class="btn-topbar" title="Trang chủ website">
-                <i class="fas fa-globe"></i>
-            </a>
             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                 @csrf
                 <button type="submit" class="btn-topbar" title="Đăng xuất">

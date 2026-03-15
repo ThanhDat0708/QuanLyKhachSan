@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\DatPhong;
 use App\Models\HoaDon;
 use App\Models\KhachHang;
+use App\Models\LoaiPhong;
 use App\Models\Phong;
 use App\Models\TrangThaiDatPhong;
+use App\Models\TrangThaiPhong;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -14,19 +16,46 @@ use Carbon\Carbon;
 class NguoiDungDatPhongController extends Controller
 {
     /**
-     * Danh sách phòng trống để đặt
+     * Danh sách phòng để đặt
      */
-    public function danhSachPhong()
+    public function danhSachPhong(Request $request)
     {
-        $phongs = Phong::with(['loaiPhong', 'trangThaiPhong'])
-            ->whereHas('trangThaiPhong', function ($q) {
-                $q->where('ten_trang_thai', 'like', '%trống%')
-                  ->orWhere('ten_trang_thai', 'like', '%Trống%')
-                  ->orWhere('ten_trang_thai', 'like', '%trong%');
-            })
-            ->get();
+        $query = Phong::with(['loaiPhong', 'trangThaiPhong']);
 
-        return view('NguoiDung.datphong.danhsachphong', compact('phongs'));
+        if ($request->filled('ma_loai_phong')) {
+            $query->where('ma_loai_phong', $request->ma_loai_phong);
+        }
+
+        if ($request->filled('muc_gia')) {
+            switch ($request->muc_gia) {
+                case 'duoi_500000':
+                    $query->where('gia_phong', '<', 500000);
+                    break;
+                case '500000_1000000':
+                    $query->whereBetween('gia_phong', [500000, 1000000]);
+                    break;
+                case '1000000_2000000':
+                    $query->whereBetween('gia_phong', [1000000, 2000000]);
+                    break;
+                case 'tren_2000000':
+                    $query->where('gia_phong', '>', 2000000);
+                    break;
+            }
+        }
+
+        $phongs = $query->orderBy('ma_trang_thai')->orderBy('gia_phong')->get();
+        $loaiPhongs = LoaiPhong::orderBy('ten_loai_phong')->get();
+        $trangThaiTrong = TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+            ->orWhere('ten_trang_thai', 'like', '%trong%')
+            ->first();
+        $maTrangThaiTrong = $trangThaiTrong?->ma_trang_thai;
+
+        $soPhongTrong = $maTrangThaiTrong
+            ? $phongs->where('ma_trang_thai', $maTrangThaiTrong)->count()
+            : 0;
+        $soPhongDaDat = $phongs->count() - $soPhongTrong;
+
+        return view('NguoiDung.datphong.danhsachphong', compact('phongs', 'loaiPhongs', 'soPhongTrong', 'soPhongDaDat', 'maTrangThaiTrong'));
     }
 
     /**
@@ -35,6 +64,7 @@ class NguoiDungDatPhongController extends Controller
     public function datPhong($id)
     {
         $phong = Phong::with(['loaiPhong', 'trangThaiPhong'])->findOrFail($id);
+
         return view('NguoiDung.datphong.datphong', compact('phong'));
     }
 
