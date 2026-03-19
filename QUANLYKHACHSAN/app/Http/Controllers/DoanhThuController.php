@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\HoaDon;
+use App\Models\DatPhong;
+use App\Models\KhachHang;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class DoanhThuController extends Controller
 {
@@ -35,6 +36,13 @@ class DoanhThuController extends Controller
         $tongDoanhThu = 0;
         $tongTienPhong = 0;
         $tongTienDichVu = 0;
+        $baoCaoSoLuong = collect();
+        $tongSoLuotDatPhong = 0;
+        $tongSoPhongDuocDat = 0;
+        $tongSoKhachHangDatPhong = 0;
+        $tongKhachHangHeThong = KhachHang::count();
+
+        $datPhongBaseQuery = DatPhong::query();
 
         if ($loai === 'ngay') {
             // Mặc định: tháng hiện tại
@@ -53,6 +61,17 @@ class DoanhThuController extends Controller
                 ->orderByRaw('DATE(ngay_lap_hoa_don) DESC')
                 ->get();
 
+            $datPhongBaseQuery->whereBetween('ngay_dat_phong', [$tuNgay . ' 00:00:00', $denNgay . ' 23:59:59']);
+
+            $baoCaoSoLuong = (clone $datPhongBaseQuery)
+                ->selectRaw('DATE(ngay_dat_phong) as ngay,
+                    COUNT(*) as so_luot_dat_phong,
+                    COUNT(DISTINCT ma_phong) as so_phong_duoc_dat,
+                    COUNT(DISTINCT ma_khach_hang) as so_khach_hang')
+                ->groupByRaw('DATE(ngay_dat_phong)')
+                ->orderByRaw('DATE(ngay_dat_phong) DESC')
+                ->get();
+
         } elseif ($loai === 'thang') {
             $doanhThu = HoaDon::selectRaw('MONTH(ngay_lap_hoa_don) as thang,
                     YEAR(ngay_lap_hoa_don) as nam,
@@ -65,6 +84,18 @@ class DoanhThuController extends Controller
                 ->orderByRaw('MONTH(ngay_lap_hoa_don) DESC')
                 ->get();
 
+            $datPhongBaseQuery->whereYear('ngay_dat_phong', $nam);
+
+            $baoCaoSoLuong = (clone $datPhongBaseQuery)
+                ->selectRaw('MONTH(ngay_dat_phong) as thang,
+                    YEAR(ngay_dat_phong) as nam,
+                    COUNT(*) as so_luot_dat_phong,
+                    COUNT(DISTINCT ma_phong) as so_phong_duoc_dat,
+                    COUNT(DISTINCT ma_khach_hang) as so_khach_hang')
+                ->groupByRaw('YEAR(ngay_dat_phong), MONTH(ngay_dat_phong)')
+                ->orderByRaw('MONTH(ngay_dat_phong) DESC')
+                ->get();
+
         } elseif ($loai === 'nam') {
             $doanhThu = HoaDon::selectRaw('YEAR(ngay_lap_hoa_don) as nam,
                     COUNT(*) as so_hoa_don,
@@ -74,15 +105,29 @@ class DoanhThuController extends Controller
                 ->groupByRaw('YEAR(ngay_lap_hoa_don)')
                 ->orderByRaw('YEAR(ngay_lap_hoa_don) DESC')
                 ->get();
+
+            $baoCaoSoLuong = (clone $datPhongBaseQuery)
+                ->selectRaw('YEAR(ngay_dat_phong) as nam,
+                    COUNT(*) as so_luot_dat_phong,
+                    COUNT(DISTINCT ma_phong) as so_phong_duoc_dat,
+                    COUNT(DISTINCT ma_khach_hang) as so_khach_hang')
+                ->groupByRaw('YEAR(ngay_dat_phong)')
+                ->orderByRaw('YEAR(ngay_dat_phong) DESC')
+                ->get();
         }
 
         $tongTienPhong = $doanhThu->sum('tien_phong');
         $tongTienDichVu = $doanhThu->sum('tien_dich_vu');
         $tongDoanhThu = $doanhThu->sum('tong_tien');
+        $tongSoLuotDatPhong = (clone $datPhongBaseQuery)->count();
+        $tongSoPhongDuocDat = (clone $datPhongBaseQuery)->distinct('ma_phong')->count('ma_phong');
+        $tongSoKhachHangDatPhong = (clone $datPhongBaseQuery)->distinct('ma_khach_hang')->count('ma_khach_hang');
 
         return view('admin.doanhthu.index', compact(
             'doanhThu', 'loai', 'tuNgay', 'denNgay', 'thang', 'nam',
-            'danhSachNam', 'tongDoanhThu', 'tongTienPhong', 'tongTienDichVu'
+            'danhSachNam', 'tongDoanhThu', 'tongTienPhong', 'tongTienDichVu',
+            'baoCaoSoLuong', 'tongSoLuotDatPhong', 'tongSoPhongDuocDat',
+            'tongSoKhachHangDatPhong', 'tongKhachHangHeThong'
         ));
     }
 }

@@ -12,13 +12,38 @@ class DatPhongController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $datphongs = DatPhong::with(['khachHang', 'phong', 'trangThaiDatPhong'])
+        $query = DatPhong::with(['khachHang', 'phong', 'trangThaiDatPhong']);
+
+        if ($request->filled('tim_kiem')) {
+            $timKiem = trim($request->tim_kiem);
+            $query->where(function ($q) use ($timKiem) {
+                $q->where('ma_dat_phong', 'like', '%' . $timKiem . '%')
+                    ->orWhereHas('khachHang', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ho_ten', 'like', '%' . $timKiem . '%');
+                    });
+            });
+        }
+
+        if ($request->filled('ngay_dat_tu')) {
+            $query->whereDate('ngay_dat_phong', '>=', $request->ngay_dat_tu);
+        }
+
+        if ($request->filled('ngay_dat_den')) {
+            $query->whereDate('ngay_dat_phong', '<=', $request->ngay_dat_den);
+        }
+
+        $datphongs = $query
             ->orderBy('ma_dat_phong', 'desc')
-            ->paginate(6);
+            ->paginate(6)
+            ->appends($request->query());
+
         return view('admin.datphong.index')
-        ->with('datphongs', $datphongs);
+        ->with('datphongs', $datphongs)
+        ->with('tim_kiem', $request->tim_kiem ?? '')
+        ->with('ngay_dat_tu', $request->ngay_dat_tu ?? '')
+        ->with('ngay_dat_den', $request->ngay_dat_den ?? '');
     }
 
     /**

@@ -12,11 +12,25 @@ class KhachHangController extends Controller
     /**
      * Hiển thị danh sách khách hàng
      */
-    public function index()
+    public function index(Request $request)
     {
-        $khachhangs = KhachHang::orderBy('created_at', 'desc')->paginate(6);
+        $query = KhachHang::query();
+
+        if ($request->filled('tim_kiem')) {
+            $timKiem = trim($request->tim_kiem);
+            $query->where(function ($q) use ($timKiem) {
+                $q->where('ho_ten', 'like', '%' . $timKiem . '%')
+                    ->orWhere('so_dien_thoai', 'like', '%' . $timKiem . '%');
+            });
+        }
+
+        $khachhangs = $query->orderBy('created_at', 'desc')
+            ->paginate(6)
+            ->appends($request->query());
+
         return view('Admin.khachhang.index')
-        ->with('khachhangs', $khachhangs);
+        ->with('khachhangs', $khachhangs)
+        ->with('tim_kiem', $request->tim_kiem ?? '');
     }
 
     /**

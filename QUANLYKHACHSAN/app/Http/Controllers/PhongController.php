@@ -11,13 +11,31 @@ class PhongController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $phongs = Phong::with(['loaiPhong', 'trangThaiPhong'])
-            ->orderBy('ma_phong', 'desc')
-            ->paginate(6);
+        $query = Phong::with(['loaiPhong', 'trangThaiPhong']);
+        
+        // Tìm theo tên phòng, loại phòng hoặc trạng thái phòng
+        if ($request->filled('tim_kiem')) {
+            $timKiem = trim($request->tim_kiem);
+            $query->where(function ($q) use ($timKiem) {
+                $q->where('ten_phong', 'like', '%' . $timKiem . '%')
+                    ->orWhereHas('loaiPhong', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ten_loai_phong', 'like', '%' . $timKiem . '%');
+                    })
+                    ->orWhereHas('trangThaiPhong', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ten_trang_thai', 'like', '%' . $timKiem . '%');
+                    });
+            });
+        }
+        
+        $phongs = $query->orderBy('ma_phong', 'desc')
+            ->paginate(6)
+            ->appends($request->query());
+        
         return view('admin.phong.index')
-        ->with('phongs', $phongs);
+        ->with('phongs', $phongs)
+        ->with('tim_kiem', $request->tim_kiem ?? '');
     }
 
     /**

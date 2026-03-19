@@ -24,7 +24,7 @@
             </a>
         </div>
         <div class="sidebar-nav">
-            <div class="nav-label">Menu chính</div>
+            <div class="nav-label">Menu</div>
             <a class="nav-link {{ request()->routeIs('nguoidung.index') ? 'active' : '' }}"
                 href="{{ route('nguoidung.index') }}">
                 <i class="fas fa-th-large"></i> Tổng quan
@@ -37,7 +37,7 @@
             <div class="nav-label">Đặt phòng</div>
             <a class="nav-link {{ request()->routeIs('nguoidung.datphong.danhsach') || request()->routeIs('nguoidung.datphong.datphong') ? 'active' : '' }}"
                 href="{{ route('nguoidung.datphong.danhsach') }}">
-                <i class="fas fa-door-open"></i> Phòng trống
+                <i class="fas fa-door-open"></i> Danh sách phòng
             </a>
             <a class="nav-link {{ request()->routeIs('nguoidung.datphong.lichsu') || request()->routeIs('nguoidung.datphong.chitiet') ? 'active' : '' }}"
                 href="{{ route('nguoidung.datphong.lichsu') }}">
