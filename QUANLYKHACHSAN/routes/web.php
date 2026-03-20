@@ -174,6 +174,7 @@ Route::middleware(['role:nguoi_dung'])->prefix('/nguoidung')->name('nguoidung.')
         Route::get('/danhsach', [NguoiDungDatPhongController::class, 'danhSachPhong'])->name('danhsach');
         Route::get('/{id}/dat', [NguoiDungDatPhongController::class, 'datPhong'])->name('datphong');
         Route::post('/store', [NguoiDungDatPhongController::class, 'store'])->name('store');
+            Route::get('/thanhcong/{id}', [NguoiDungDatPhongController::class, 'thanhCong'])->name('thanhcong');
         Route::get('/lichsu', [NguoiDungDatPhongController::class, 'lichSu'])->name('lichsu');
         Route::get('/{id}/chitiet', [NguoiDungDatPhongController::class, 'chiTiet'])->name('chitiet');
         Route::post('/{id}/huy', [NguoiDungDatPhongController::class, 'huyDatPhong'])->name('huy');

@@ -144,8 +144,25 @@ class NguoiDungDatPhongController extends Controller
             $phong->save();
         }
 
-        return redirect()->route('nguoidung.datphong.lichsu')
-            ->with('success', 'Đặt phòng thành công! Vui lòng chờ xác nhận từ khách sạn.');
+        return redirect()->route('nguoidung.datphong.thanhcong', ['id' => $datPhong->ma_dat_phong]);
+    }
+
+    public function thanhCong($id)
+    {
+        $user = Auth::user();
+        $khachhang = $user->khachHang;
+
+        if (!$khachhang) {
+            return redirect()->route('nguoidung.thongtin.edit')
+                ->with('error', 'Vui lòng cập nhật thông tin cá nhân.');
+        }
+
+        $datPhong = DatPhong::with(['phong.loaiPhong', 'trangThaiDatPhong'])
+            ->where('ma_dat_phong', $id)
+            ->where('ma_khach_hang', $khachhang->ma_khach_hang)
+            ->firstOrFail();
+
+        return view('NguoiDung.datphong.thanhcong', compact('datPhong'));
     }
 
     /**
@@ -230,25 +247,15 @@ class NguoiDungDatPhongController extends Controller
         $datphong->ma_trang_thai_dat_phong = $trangThaiHuy->ma_trang_thai_dat_phong;
         $datphong->save();
 
-        // Kiểm tra xem phòng còn đặt phòng nào đang hoạt động không
-        $trangThaiHuyIds = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
-            ->orWhere('ten_trang_thai_dat_phong', 'like', '%hoàn%')
-            ->pluck('ma_trang_thai_dat_phong')
-            ->toArray();
+        // Khi khách hủy thành công, chuyển phòng về trạng thái "Trống"
+        $trangThaiTrong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+            ->orWhere('ten_trang_thai', 'like', '%Trống%')
+            ->first();
 
-        $conDatPhongKhac = DatPhong::where('ma_phong', $datphong->ma_phong)
-            ->where('ma_dat_phong', '!=', $datphong->ma_dat_phong)
-            ->whereNotIn('ma_trang_thai_dat_phong', $trangThaiHuyIds)
-            ->exists();
+        if ($trangThaiTrong) {
+            $phong = Phong::find($datphong->ma_phong);
 
-        // Nếu không còn đặt phòng nào khác, chuyển phòng về "Trống"
-        if (!$conDatPhongKhac) {
-            $trangThaiTrong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
-                ->orWhere('ten_trang_thai', 'like', '%Trống%')
-                ->first();
-
-            if ($trangThaiTrong) {
-                $phong = Phong::find($datphong->ma_phong);
+            if ($phong) {
                 $phong->ma_trang_thai = $trangThaiTrong->ma_trang_thai;
                 $phong->save();
             }

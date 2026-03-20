@@ -577,48 +577,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Services -->
-    <section id="services" class="section" style="background: #f8fafc;">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Tiện ích</span>
-                <h2>Dịch Vụ Của Chúng Tôi</h2>
-                <p>Mang đến cho bạn trải nghiệm trọn vẹn nhất</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-3 col-6">
-                    <div class="service-card">
-                        <div class="service-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-utensils"></i></div>
-                        <h5>Nhà Hàng</h5>
-                        <p>Ẩm thực đa dạng, đạt chuẩn quốc tế</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card">
-                        <div class="service-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"><i class="fas fa-person-swimming"></i></div>
-                        <h5>Bể Bơi</h5>
-                        <p>Hồ bơi vô cực ngoài trời tuyệt đẹp</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card">
-                        <div class="service-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);"><i class="fas fa-spa"></i></div>
-                        <h5>Spa & Wellness</h5>
-                        <p>Massage thư giãn, chăm sóc sức khỏe</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="service-card">
-                        <div class="service-icon" style="background: linear-gradient(135deg, #10b981, #059669);"><i class="fas fa-square-parking"></i></div>
-                        <h5>Bãi Đỗ Xe</h5>
-                        <p>Miễn phí 24/7, an ninh đảm bảo</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact -->
     <section id="contact" class="section contact-section">
         <div class="container">
