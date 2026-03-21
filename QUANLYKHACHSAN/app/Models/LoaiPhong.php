@@ -12,4 +12,9 @@ class LoaiPhong extends Model
     protected $fillable = [
         'ten_loai_phong'
     ];
+
+    public function phongs()
+    {
+        return $this->hasMany(Phong::class, 'ma_loai_phong', 'ma_loai_phong');
+    }
 }

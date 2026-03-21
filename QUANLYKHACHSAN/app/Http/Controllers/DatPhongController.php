@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class DatPhongController extends Controller
 {
+    private function timTrangThaiTheoTuKhoa(array $tuKhoas)
+    {
+        $query = TrangThaiDatPhong::query();
+
+        foreach ($tuKhoas as $index => $tuKhoa) {
+            if ($index === 0) {
+                $query->where('ten_trang_thai_dat_phong', 'like', '%' . $tuKhoa . '%');
+            } else {
+                $query->orWhere('ten_trang_thai_dat_phong', 'like', '%' . $tuKhoa . '%');
+            }
+        }
+
+        return $query->first();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,8 +37,15 @@ class DatPhongController extends Controller
                 $q->where('ma_dat_phong', 'like', '%' . $timKiem . '%')
                     ->orWhereHas('khachHang', function ($subQuery) use ($timKiem) {
                         $subQuery->where('ho_ten', 'like', '%' . $timKiem . '%');
+                    })
+                    ->orWhereHas('phong', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ten_phong', 'like', '%' . $timKiem . '%');
                     });
             });
+        }
+
+        if ($request->filled('ma_trang_thai_dat_phong')) {
+            $query->where('ma_trang_thai_dat_phong', $request->ma_trang_thai_dat_phong);
         }
 
         if ($request->filled('ngay_dat_tu')) {
@@ -39,9 +61,34 @@ class DatPhongController extends Controller
             ->paginate(6)
             ->appends($request->query());
 
+        $trangThaiDatPhongs = TrangThaiDatPhong::orderBy('ten_trang_thai_dat_phong')->get();
+
+        $tongDonDatPhong = DatPhong::count();
+        $trangThaiChoXacNhan = $this->timTrangThaiTheoTuKhoa(['chờ', 'chua', 'chưa']);
+        $trangThaiDaXacNhan = $this->timTrangThaiTheoTuKhoa(['đã xác nhận', 'da xac nhan']);
+        $trangThaiDaHuy = $this->timTrangThaiTheoTuKhoa(['hủy', 'huy']);
+
+        $soDonChoXacNhan = $trangThaiChoXacNhan
+            ? DatPhong::where('ma_trang_thai_dat_phong', $trangThaiChoXacNhan->ma_trang_thai_dat_phong)->count()
+            : 0;
+
+        $soDonDaXacNhan = $trangThaiDaXacNhan
+            ? DatPhong::where('ma_trang_thai_dat_phong', $trangThaiDaXacNhan->ma_trang_thai_dat_phong)->count()
+            : 0;
+
+        $soDonDaHuy = $trangThaiDaHuy
+            ? DatPhong::where('ma_trang_thai_dat_phong', $trangThaiDaHuy->ma_trang_thai_dat_phong)->count()
+            : 0;
+
         return view('admin.datphong.index')
         ->with('datphongs', $datphongs)
+        ->with('trangThaiDatPhongs', $trangThaiDatPhongs)
+        ->with('tongDonDatPhong', $tongDonDatPhong)
+        ->with('soDonChoXacNhan', $soDonChoXacNhan)
+        ->with('soDonDaXacNhan', $soDonDaXacNhan)
+        ->with('soDonDaHuy', $soDonDaHuy)
         ->with('tim_kiem', $request->tim_kiem ?? '')
+        ->with('ma_trang_thai_dat_phong', $request->ma_trang_thai_dat_phong ?? '')
         ->with('ngay_dat_tu', $request->ngay_dat_tu ?? '')
         ->with('ngay_dat_den', $request->ngay_dat_den ?? '');
     }
@@ -144,7 +191,16 @@ class DatPhongController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $datphong = DatPhong::with([
+            'khachHang',
+            'phong.loaiPhong',
+            'trangThaiDatPhong',
+            'suDungDichVus.dichVu',
+            'hoaDon'
+        ])->findOrFail($id);
+
+        return view('admin.datphong.show')
+            ->with('datphong', $datphong);
     }
 
     /**
@@ -267,5 +323,72 @@ class DatPhongController extends Controller
 
         return redirect()->route('admin.datphong.index')
         ->with('success', 'Đặt phòng đã được xóa thành công.');
+    }
+
+    public function xacNhanNhanh(string $id)
+    {
+        $datphong = DatPhong::with(['phong', 'trangThaiDatPhong'])->findOrFail($id);
+
+        $trangThaiDaXacNhan = $this->timTrangThaiTheoTuKhoa(['đã xác nhận', 'da xac nhan']);
+
+        if (!$trangThaiDaXacNhan) {
+            return redirect()->route('admin.datphong.index')
+                ->with('error', 'Không tìm thấy trạng thái đã xác nhận trong hệ thống.');
+        }
+
+        $datphong->ma_trang_thai_dat_phong = $trangThaiDaXacNhan->ma_trang_thai_dat_phong;
+        $datphong->save();
+
+        $trangThaiHetPhong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%hết%')
+            ->orWhere('ten_trang_thai', 'like', '%Het%')
+            ->first();
+
+        if ($trangThaiHetPhong && $datphong->phong) {
+            $datphong->phong->ma_trang_thai = $trangThaiHetPhong->ma_trang_thai;
+            $datphong->phong->save();
+        }
+
+        return redirect()->route('admin.datphong.index')
+            ->with('success', 'Đơn đặt phòng đã được xác nhận nhanh.');
+    }
+
+    public function huyNhanh(string $id)
+    {
+        $datphong = DatPhong::with('phong')->findOrFail($id);
+
+        $trangThaiHuy = $this->timTrangThaiTheoTuKhoa(['hủy', 'huy']);
+
+        if (!$trangThaiHuy) {
+            return redirect()->route('admin.datphong.index')
+                ->with('error', 'Không tìm thấy trạng thái hủy trong hệ thống.');
+        }
+
+        $datphong->ma_trang_thai_dat_phong = $trangThaiHuy->ma_trang_thai_dat_phong;
+        $datphong->save();
+
+        $trangThaiHuyIds = TrangThaiDatPhong::where('ten_trang_thai_dat_phong', 'like', '%hủy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%huy%')
+            ->orWhere('ten_trang_thai_dat_phong', 'like', '%hoàn%')
+            ->pluck('ma_trang_thai_dat_phong')
+            ->toArray();
+
+        $conDatPhongKhac = DatPhong::where('ma_phong', $datphong->ma_phong)
+            ->where('ma_dat_phong', '!=', $datphong->ma_dat_phong)
+            ->whereNotIn('ma_trang_thai_dat_phong', $trangThaiHuyIds)
+            ->exists();
+
+        if (!$conDatPhongKhac) {
+            $trangThaiTrong = \App\Models\TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+                ->orWhere('ten_trang_thai', 'like', '%trong%')
+                ->first();
+
+            if ($trangThaiTrong && $datphong->phong) {
+                $datphong->phong->ma_trang_thai = $trangThaiTrong->ma_trang_thai;
+                $datphong->phong->save();
+            }
+        }
+
+        return redirect()->route('admin.datphong.index')
+            ->with('success', 'Đơn đặt phòng đã được hủy nhanh.');
     }
 }

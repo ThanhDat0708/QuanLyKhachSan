@@ -12,4 +12,9 @@ class TrangThaiPhong extends Model
     protected $fillable = [
         'ten_trang_thai'
     ];
+
+    public function phongs()
+    {
+        return $this->hasMany(Phong::class, 'ma_trang_thai', 'ma_trang_thai');
+    }
 }

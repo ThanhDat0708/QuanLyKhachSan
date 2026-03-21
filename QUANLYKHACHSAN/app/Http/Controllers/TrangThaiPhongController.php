@@ -4,16 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TrangThaiPhong;
+use App\Models\Phong;
 class TrangThaiPhongController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trangthaiphongs = TrangThaiPhong::orderBy('ma_trang_thai', 'desc')->paginate(2);
+        $tuKhoa = trim((string) $request->query('q', ''));
+
+        $query = TrangThaiPhong::withCount('phongs');
+
+        if ($tuKhoa !== '') {
+            $query->where('ten_trang_thai', 'like', '%' . $tuKhoa . '%');
+        }
+
+        $trangthaiphongs = $query->orderBy('ma_trang_thai', 'desc')->paginate(6)->withQueryString();
+        $tongTrangThaiPhong = TrangThaiPhong::count();
+        $tongSoPhong = Phong::count();
+
         return view('Admin.TrangThaiPhong.index')
-        ->with('trangthaiphongs', $trangthaiphongs);
+        ->with('trangthaiphongs', $trangthaiphongs)
+        ->with('tongTrangThaiPhong', $tongTrangThaiPhong)
+        ->with('tongSoPhong', $tongSoPhong)
+        ->with('tuKhoa', $tuKhoa);
     }
 
     /**
@@ -58,7 +73,10 @@ class TrangThaiPhongController extends Controller
      */
     public function show(string $id)
     {
-        
+        $trangthaiphong = TrangThaiPhong::withCount('phongs')->findOrFail($id);
+
+        return view('Admin.TrangThaiPhong.show')
+            ->with('trangthaiphong', $trangthaiphong);
     }
 
     /**

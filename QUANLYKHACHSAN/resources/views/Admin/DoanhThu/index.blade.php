@@ -4,23 +4,20 @@
     <style>
         .stat-card {
             border-radius: 10px;
-            padding: 20px;
+            padding: 14px;
             color: #fff;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: transform 0.2s;
         }
         .stat-card:hover { transform: translateY(-3px); }
-        .stat-card h3 { font-size: 1.6rem; margin-bottom: 5px; }
-        .stat-card p { margin: 0; opacity: 0.9; font-size: 0.9rem; }
+        .stat-card h3 { font-size: 1.35rem; margin-bottom: 4px; }
+        .stat-card p { margin: 0; opacity: 0.9; font-size: 0.85rem; }
         .bg-room { background: linear-gradient(135deg, #3498db, #2980b9); }
         .bg-service { background: linear-gradient(135deg, #e67e22, #d35400); }
         .bg-total { background: linear-gradient(135deg, #27ae60, #219a52); }
-        .bg-booking { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .bg-booked-room { background: linear-gradient(135deg, #1abc9c, #16a085); }
-        .bg-customer { background: linear-gradient(135deg, #e74c3c, #c0392b); }
         .bg-customer-all { background: linear-gradient(135deg, #34495e, #2c3e50); }
-        .filter-card { background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        .filter-card { background: #f8f9fa; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
         .btn-filter { min-width: 100px; }
         .btn-filter.active { background-color: var(--accent); border-color: var(--accent); color: #fff; }
         @media print {
@@ -89,7 +86,7 @@
                         </div>
 
                         {{-- Card tổng --}}
-                        <div class="row mb-4">
+                        <div class="row mb-2">
                             <div class="col-lg-3 col-md-6 mb-3">
                                 <div class="stat-card bg-room">
                                     <p>Tổng Tiền Phòng</p>
@@ -112,24 +109,6 @@
                                 <div class="stat-card bg-customer-all">
                                     <p>Tổng Khách Hàng Hệ Thống</p>
                                     <h3>{{ number_format($tongKhachHangHeThong, 0, ',', '.') }}</h3>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="stat-card bg-booking">
-                                    <p>Số Lượt Đặt Phòng</p>
-                                    <h3>{{ number_format($tongSoLuotDatPhong, 0, ',', '.') }}</h3>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-3">
-                                <div class="stat-card bg-booked-room">
-                                    <p>Số Phòng Được Đặt</p>
-                                    <h3>{{ number_format($tongSoPhongDuocDat, 0, ',', '.') }}</h3>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-12 mb-3">
-                                <div class="stat-card bg-customer">
-                                    <p>Số Khách Hàng Đặt Phòng</p>
-                                    <h3>{{ number_format($tongSoKhachHangDatPhong, 0, ',', '.') }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -196,59 +175,6 @@
                         @else
                             <div class="alert alert-info text-center">
                                 <p class="mb-0">Không có dữ liệu doanh thu trong khoảng thời gian này.</p>
-                            </div>
-                        @endif
-
-                        <h5 class="mb-3 mt-4" style="color: var(--primary);">Chi tiết số lượng phòng đặt và khách hàng</h5>
-
-                        @if ($baoCaoSoLuong->count() > 0)
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>#</th>
-                                            @if ($loai === 'ngay')
-                                                <th>Ngày</th>
-                                            @elseif ($loai === 'thang')
-                                                <th>Tháng</th>
-                                            @else
-                                                <th>Năm</th>
-                                            @endif
-                                            <th>Số Lượt Đặt Phòng</th>
-                                            <th>Số Phòng Được Đặt</th>
-                                            <th>Số Khách Hàng</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($baoCaoSoLuong as $index => $item)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                @if ($loai === 'ngay')
-                                                    <td>{{ \Carbon\Carbon::parse($item->ngay)->format('d/m/Y') }}</td>
-                                                @elseif ($loai === 'thang')
-                                                    <td>Tháng {{ $item->thang }}/{{ $item->nam }}</td>
-                                                @else
-                                                    <td>Năm {{ $item->nam }}</td>
-                                                @endif
-                                                <td>{{ number_format($item->so_luot_dat_phong, 0, ',', '.') }}</td>
-                                                <td>{{ number_format($item->so_phong_duoc_dat, 0, ',', '.') }}</td>
-                                                <td>{{ number_format($item->so_khach_hang, 0, ',', '.') }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot class="table-secondary">
-                                        <tr>
-                                            <td colspan="{{ $loai === 'ngay' ? 2 : 2 }}"><strong>TỔNG CỘNG</strong></td>
-                                            <td><strong>{{ number_format($baoCaoSoLuong->sum('so_luot_dat_phong'), 0, ',', '.') }}</strong></td>
-                                            <td><strong>{{ number_format($tongSoPhongDuocDat, 0, ',', '.') }}</strong></td>
-                                            <td><strong>{{ number_format($tongSoKhachHangDatPhong, 0, ',', '.') }}</strong></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        @else
-                            <div class="alert alert-info text-center">
-                                <p class="mb-0">Không có dữ liệu đặt phòng trong khoảng thời gian này.</p>
                             </div>
                         @endif
 

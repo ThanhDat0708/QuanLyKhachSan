@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LoaiPhong;
+use App\Models\Phong;
 class LoaiPhongController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //Gọi Model Loại phòng để truy vấn sắp xếp theo mã giảm dần và phân trang 6 mẫu tin trên một trang
-        $loaiphongs = LoaiPhong::orderBy('ma_loai_phong','desc')->paginate(6);
-       return view('admin.loaiphong.index')->with('loaiphongs',$loaiphongs);
+        $tuKhoa = trim((string) $request->query('q', ''));
+
+        $query = LoaiPhong::withCount('phongs');
+
+        if ($tuKhoa !== '') {
+            $query->where('ten_loai_phong', 'like', '%' . $tuKhoa . '%');
+        }
+
+        $loaiphongs = $query->orderBy('ma_loai_phong', 'desc')->paginate(6)->withQueryString();
+
+        $tongLoaiPhong = LoaiPhong::count();
+        $tongSoPhong = Phong::count();
+
+        return view('admin.loaiphong.index', compact('loaiphongs', 'tongLoaiPhong', 'tongSoPhong', 'tuKhoa'));
     }
 
     /**

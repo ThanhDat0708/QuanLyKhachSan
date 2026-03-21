@@ -69,6 +69,9 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/', [DatPhongController::class, 'index'])->name('index');
         Route::get('/create', [DatPhongController::class, 'create'])->name('create');
         Route::post('/store', [DatPhongController::class, 'store'])->name('store');
+        Route::get('/{id}/show', [DatPhongController::class, 'show'])->name('show');
+        Route::put('/{id}/xac-nhan', [DatPhongController::class, 'xacNhanNhanh'])->name('xacnhan');
+        Route::put('/{id}/huy-don', [DatPhongController::class, 'huyNhanh'])->name('huydon');
         Route::get('/{id}/edit', [DatPhongController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [DatPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [DatPhongController::class, 'destroy'])->name('destroy');
@@ -120,6 +123,7 @@ Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->grou
         Route::get('/', [TrangThaiPhongController::class, 'index'])->name('index');
         Route::get('/create', [TrangThaiPhongController::class, 'create'])->name('create');
         Route::post('/store', [TrangThaiPhongController::class, 'store'])->name('store');
+        Route::get('/{id}/show', [TrangThaiPhongController::class, 'show'])->name('show');
         Route::get('/{id}/edit', [TrangThaiPhongController::class, 'edit'])->name('edit');
         Route::put('/{id}/update', [TrangThaiPhongController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [TrangThaiPhongController::class, 'destroy'])->name('destroy');

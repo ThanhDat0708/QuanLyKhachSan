@@ -14,13 +14,49 @@ class HoaDonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $hoadons = HoaDon::with(['datPhong.khachHang', 'datPhong.phong'])
+        $query = HoaDon::with(['datPhong.khachHang', 'datPhong.phong']);
+
+        if ($request->filled('tim_kiem')) {
+            $timKiem = trim((string) $request->tim_kiem);
+
+            $query->where(function ($q) use ($timKiem) {
+                $q->where('ma_hoa_don', 'like', '%' . $timKiem . '%')
+                    ->orWhereHas('datPhong.khachHang', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ho_ten', 'like', '%' . $timKiem . '%');
+                    })
+                    ->orWhereHas('datPhong.phong', function ($subQuery) use ($timKiem) {
+                        $subQuery->where('ten_phong', 'like', '%' . $timKiem . '%');
+                    });
+            });
+        }
+
+        if ($request->filled('ngay_lap_tu')) {
+            $query->whereDate('ngay_lap_hoa_don', '>=', $request->ngay_lap_tu);
+        }
+
+        if ($request->filled('ngay_lap_den')) {
+            $query->whereDate('ngay_lap_hoa_don', '<=', $request->ngay_lap_den);
+        }
+
+        $hoadons = $query
             ->orderBy('ma_hoa_don', 'desc')
-            ->paginate(6);
+            ->paginate(6)
+            ->appends($request->query());
+
+        $tongSoHoaDon = HoaDon::count();
+        $soHoaDonTrongThang = HoaDon::whereYear('ngay_lap_hoa_don', now()->year)
+            ->whereMonth('ngay_lap_hoa_don', now()->month)
+            ->count();
+
         return view('admin.hoadon.index')
-            ->with('hoadons', $hoadons);
+            ->with('hoadons', $hoadons)
+            ->with('tongSoHoaDon', $tongSoHoaDon)
+            ->with('soHoaDonTrongThang', $soHoaDonTrongThang)
+            ->with('tim_kiem', $request->tim_kiem ?? '')
+            ->with('ngay_lap_tu', $request->ngay_lap_tu ?? '')
+            ->with('ngay_lap_den', $request->ngay_lap_den ?? '');
     }
 
     /**

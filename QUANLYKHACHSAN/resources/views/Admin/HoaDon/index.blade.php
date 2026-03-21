@@ -23,6 +23,52 @@
                             </div>
                         @endif
 
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body">
+                                        <p class="text-muted mb-1">Tổng số hóa đơn</p>
+                                        <h4 class="mb-0 fw-bold text-primary">{{ $tongSoHoaDon }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body">
+                                        <p class="text-muted mb-1">Số hóa đơn trong tháng</p>
+                                        <h4 class="mb-0 fw-bold text-success">{{ $soHoaDonTrongThang }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Tìm Kiếm Hóa Đơn</h5>
+                                <form method="GET" action="{{ route('admin.hoadon.index') }}" class="row g-3">
+                                    <div class="col-md-4">
+                                        <input
+                                            type="text"
+                                            name="tim_kiem"
+                                            class="form-control"
+                                            placeholder="Tên khách hàng hoặc tên phòng..."
+                                            value="{{ $tim_kiem ?? '' }}"
+                                        >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="date" name="ngay_lap_tu" class="form-control" value="{{ $ngay_lap_tu ?? '' }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="date" name="ngay_lap_den" class="form-control" value="{{ $ngay_lap_den ?? '' }}">
+                                    </div>
+                                    <div class="col-md-2 d-flex gap-2">
+                                        <button type="submit" class="btn btn-info">Tìm</button>
+                                        <a href="{{ route('admin.hoadon.index') }}" class="btn btn-secondary">Đặt lại</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         <a href="{{ route('admin.hoadon.create') }}" class="btn btn-primary mb-3">Tạo Hóa Đơn Mới</a>
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
@@ -38,7 +84,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($hoadons as $hoadon)
+                                @forelse ($hoadons as $hoadon)
                                     <tr>
                                         <td>{{ $hoadon->ma_hoa_don }}</td>
                                         <td>{{ $hoadon->datPhong->khachHang->ho_ten ?? 'N/A' }}</td>
@@ -61,10 +107,14 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center text-muted">Không tìm thấy hóa đơn phù hợp.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
-                        {{ $hoadons->links() }}
+                        {{ $hoadons->appends(request()->query())->links() }}
                     </div>
                 </div>
             </div>
