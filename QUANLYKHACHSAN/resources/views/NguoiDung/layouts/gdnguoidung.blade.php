@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khách Sạn - DNC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary: #4f46e5;
@@ -15,7 +18,11 @@
             --dark: #1e293b;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -35,9 +42,9 @@
         }
 
         .top-navbar.scrolled {
-            background: rgba(255,255,255,.97);
+            background: rgba(255, 255, 255, .97);
             backdrop-filter: blur(12px);
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
             padding: 10px 0;
         }
 
@@ -72,7 +79,7 @@
             font-family: 'Inter', sans-serif;
             font-size: .65rem;
             font-weight: 500;
-            color: rgba(255,255,255,.55);
+            color: rgba(255, 255, 255, .55);
             letter-spacing: 2.5px;
             text-transform: uppercase;
             transition: color .35s ease;
@@ -90,15 +97,33 @@
             color: #94a3b8;
         }
 
-        .top-navbar.scrolled .navbar-brand { color: var(--dark); }
-        .top-navbar .nav-link { color: rgba(255,255,255,.85); font-weight: 500; font-size: .9rem; padding: 8px 16px !important; transition: color .2s; }
-        .top-navbar.scrolled .nav-link { color: #475569; }
-        .top-navbar .nav-link:hover { color: #fff; }
-        .top-navbar.scrolled .nav-link:hover { color: var(--primary); }
+        .top-navbar.scrolled .navbar-brand {
+            color: var(--dark);
+        }
+
+        .top-navbar .nav-link {
+            color: rgba(255, 255, 255, .85);
+            font-weight: 500;
+            font-size: .9rem;
+            padding: 8px 16px !important;
+            transition: color .2s;
+        }
+
+        .top-navbar.scrolled .nav-link {
+            color: #475569;
+        }
+
+        .top-navbar .nav-link:hover {
+            color: #fff;
+        }
+
+        .top-navbar.scrolled .nav-link:hover {
+            color: var(--primary);
+        }
 
         .btn-nav-login {
             padding: 8px 22px;
-            border: 2px solid rgba(255,255,255,.5);
+            border: 2px solid rgba(255, 255, 255, .5);
             border-radius: 50px;
             color: #fff;
             font-weight: 600;
@@ -106,9 +131,21 @@
             text-decoration: none;
             transition: all .25s;
         }
-        .btn-nav-login:hover { background: #fff; color: var(--dark); }
-        .top-navbar.scrolled .btn-nav-login { border-color: var(--primary); color: var(--primary); }
-        .top-navbar.scrolled .btn-nav-login:hover { background: var(--primary); color: #fff; }
+
+        .btn-nav-login:hover {
+            background: #fff;
+            color: var(--dark);
+        }
+
+        .top-navbar.scrolled .btn-nav-login {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .top-navbar.scrolled .btn-nav-login:hover {
+            background: var(--primary);
+            color: #fff;
+        }
 
         .btn-nav-register {
             padding: 8px 22px;
@@ -120,14 +157,30 @@
             font-size: .85rem;
             text-decoration: none;
             transition: all .25s;
-            box-shadow: 0 2px 8px rgba(79,70,229,.3);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, .3);
         }
-        .btn-nav-register:hover { background: var(--primary-light); color: #fff; transform: translateY(-1px); }
 
-        .navbar-toggler { border-color: rgba(255,255,255,.5); }
-        .navbar-toggler-icon { filter: brightness(0) invert(1); }
-        .top-navbar.scrolled .navbar-toggler { border-color: #cbd5e1; }
-        .top-navbar.scrolled .navbar-toggler-icon { filter: none; }
+        .btn-nav-register:hover {
+            background: var(--primary-light);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, .5);
+        }
+
+        .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        .top-navbar.scrolled .navbar-toggler {
+            border-color: #cbd5e1;
+        }
+
+        .top-navbar.scrolled .navbar-toggler-icon {
+            filter: none;
+        }
 
         /* ===== HERO ===== */
         .hero {
@@ -154,7 +207,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(15,23,42,.7) 0%, rgba(30,41,59,.45) 50%, rgba(51,65,85,.3) 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, .7) 0%, rgba(30, 41, 59, .45) 50%, rgba(51, 65, 85, .3) 100%);
         }
 
         .hero-content {
@@ -173,7 +226,7 @@
 
         .hero p.lead {
             font-size: 1.15rem;
-            color: rgba(255,255,255,.65);
+            color: rgba(255, 255, 255, .65);
             max-width: 520px;
             line-height: 1.7;
             margin-bottom: 36px;
@@ -195,23 +248,34 @@
             background: var(--primary);
             color: #fff;
             border: none;
-            box-shadow: 0 4px 20px rgba(79,70,229,.35);
+            box-shadow: 0 4px 20px rgba(79, 70, 229, .35);
         }
-        .btn-hero-primary:hover { background: var(--primary-light); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,70,229,.4); }
+
+        .btn-hero-primary:hover {
+            background: var(--primary-light);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(79, 70, 229, .4);
+        }
 
         .btn-hero-outline {
             background: transparent;
             color: #fff;
-            border: 2px solid rgba(255,255,255,.3);
+            border: 2px solid rgba(255, 255, 255, .3);
         }
-        .btn-hero-outline:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.6); }
+
+        .btn-hero-outline:hover {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, .6);
+        }
 
         .hero-stats {
             display: flex;
             gap: 48px;
             margin-top: 56px;
             padding-top: 32px;
-            border-top: 1px solid rgba(255,255,255,.1);
+            border-top: 1px solid rgba(255, 255, 255, .1);
         }
 
         .hero-stats .stat-item h3 {
@@ -222,7 +286,7 @@
         }
 
         .hero-stats .stat-item p {
-            color: rgba(255,255,255,.5);
+            color: rgba(255, 255, 255, .5);
             font-size: .82rem;
             font-weight: 500;
             text-transform: uppercase;
@@ -230,7 +294,9 @@
         }
 
         /* ===== SECTIONS ===== */
-        .section { padding: 100px 0; }
+        .section {
+            padding: 100px 0;
+        }
 
         .section-header {
             text-align: center;
@@ -241,7 +307,7 @@
             display: inline-block;
             padding: 4px 14px;
             border-radius: 50px;
-            background: rgba(79,70,229,.08);
+            background: rgba(79, 70, 229, .08);
             color: var(--primary);
             font-size: .78rem;
             font-weight: 600;
@@ -269,14 +335,14 @@
             border-radius: 16px;
             overflow: hidden;
             background: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
             transition: all .35s ease;
             border: 1px solid #f1f5f9;
         }
 
         .room-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .1);
         }
 
         .room-card .room-img {
@@ -298,7 +364,7 @@
             position: absolute;
             bottom: 12px;
             right: 12px;
-            background: rgba(0,0,0,.65);
+            background: rgba(0, 0, 0, .65);
             backdrop-filter: blur(8px);
             color: #fff;
             padding: 6px 16px;
@@ -374,7 +440,7 @@
 
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
             border-color: transparent;
         }
 
@@ -419,7 +485,7 @@
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            background: rgba(255,255,255,.08);
+            background: rgba(255, 255, 255, .08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -450,24 +516,58 @@
 
         /* Animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .animate-up { animation: fadeInUp .8s ease forwards; }
-        .animate-up.d1 { animation-delay: .1s; }
-        .animate-up.d2 { animation-delay: .2s; }
-        .animate-up.d3 { animation-delay: .3s; }
-        .animate-up.d4 { animation-delay: .4s; }
+        .animate-up {
+            animation: fadeInUp .8s ease forwards;
+        }
+
+        .animate-up.d1 {
+            animation-delay: .1s;
+        }
+
+        .animate-up.d2 {
+            animation-delay: .2s;
+        }
+
+        .animate-up.d3 {
+            animation-delay: .3s;
+        }
+
+        .animate-up.d4 {
+            animation-delay: .4s;
+        }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .hero-stats { gap: 24px; flex-wrap: wrap; }
-            .section { padding: 60px 0; }
-            .section-header h2 { font-size: 1.8rem; }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="top-navbar" id="topNavbar">
@@ -480,7 +580,8 @@
                         <div class="brand-sub">Hotel Luxury</div>
                     </div>
                 </a>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="mainNav">
@@ -489,7 +590,7 @@
                         <li class="nav-item"><a class="nav-link" href="#services">Dịch vụ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
                         @auth
-                            @if(auth()->user()->vai_tro == 'admin' || auth()->user()->vai_tro == 'le_tan')
+                            @if (auth()->user()->vai_tro == 'admin' || auth()->user()->vai_tro == 'le_tan')
                                 <li class="nav-item ms-2">
                                     <a class="btn-nav-register" href="{{ route('dashboard') }}">
                                         <i class="fas fa-gauge-high"></i> Quản lý
@@ -522,12 +623,13 @@
             <div class="hero-content">
                 <h1 class="animate-up d1">Nơi Nghỉ Dưỡng<br>Đẳng Cấp & Sang Trọng</h1>
                 <p class="lead animate-up d2">
-                    Tận hưởng không gian yên bình, tiện nghi hiện đại và dịch vụ tận tâm 
+                    Tận hưởng không gian yên bình, tiện nghi hiện đại và dịch vụ tận tâm
                     cho kỳ nghỉ hoàn hảo của bạn.
                 </p>
                 <div class="d-flex gap-3 flex-wrap animate-up d3">
                     @auth
-                        <a href="{{ auth()->user()->vai_tro == 'nguoi_dung' ? route('nguoidung.datphong.danhsach') : route('dashboard') }}" class="btn-hero btn-hero-primary">
+                        <a href="{{ auth()->user()->vai_tro == 'nguoi_dung' ? route('nguoidung.datphong.danhsach') : route('dashboard') }}"
+                            class="btn-hero btn-hero-primary">
                             Đặt phòng ngay <i class="fas fa-arrow-right"></i>
                         </a>
                     @else
@@ -572,19 +674,23 @@
             <div class="row g-4">
                 @forelse(($phongsNoiBat ?? collect()) as $phong)
                     @php
-                        $coTheDat = !empty($maTrangThaiTrong) && (int) $phong->ma_trang_thai === (int) $maTrangThaiTrong;
+                        $coTheDat =
+                            !empty($maTrangThaiTrong) && (int) $phong->ma_trang_thai === (int) $maTrangThaiTrong;
                     @endphp
                     <div class="col-md-6 col-xl-4">
                         <div class="room-card h-100">
                             <div class="room-img">
-                                @if($phong->anh_phong)
-                                    <img src="{{ asset('images/' . $phong->anh_phong) }}" alt="{{ $phong->ten_phong }}">
+                                @if ($phong->anh_phong)
+                                    <img src="{{ asset('images/' . $phong->anh_phong) }}"
+                                        alt="{{ $phong->ten_phong }}">
                                 @else
-                                    <div style="height:100%; background:linear-gradient(135deg, #667eea, #764ba2); display:flex; align-items:center; justify-content:center;">
+                                    <div
+                                        style="height:100%; background:linear-gradient(135deg, #667eea, #764ba2); display:flex; align-items:center; justify-content:center;">
                                         <i class="fas fa-bed fa-3x" style="color:rgba(255,255,255,.35);"></i>
                                     </div>
                                 @endif
-                                <span class="room-price">{{ number_format($phong->gia_phong, 0, ',', '.') }}đ / đêm</span>
+                                <span class="room-price">{{ number_format($phong->gia_phong, 0, ',', '.') }}đ /
+                                    đêm</span>
                             </div>
                             <div class="room-body">
                                 <h5>{{ $phong->ten_phong }}</h5>
@@ -592,14 +698,16 @@
                                     {{ \Illuminate\Support\Str::limit($phong->mo_ta ?: 'Không gian nghỉ dưỡng tiện nghi, phù hợp cho kỳ nghỉ của bạn.', 95) }}
                                 </p>
                                 <div class="room-features">
-                                    <span><i class="fas fa-layer-group"></i> {{ $phong->loaiPhong->ten_loai_phong ?? 'N/A' }}</span>
+                                    <span><i class="fas fa-layer-group"></i>
+                                        {{ $phong->loaiPhong->ten_loai_phong ?? 'N/A' }}</span>
                                     <span><i class="fas fa-bed"></i> {{ $phong->so_luong_giuong ?? 0 }} giường</span>
                                 </div>
 
-                                @if($coTheDat)
+                                @if ($coTheDat)
                                     @auth
-                                        @if(auth()->user()->vai_tro === 'nguoi_dung')
-                                            <a href="{{ route('nguoidung.datphong.datphong', $phong->ma_phong) }}" class="room-book-btn">
+                                        @if (auth()->user()->vai_tro === 'nguoi_dung')
+                                            <a href="{{ route('nguoidung.datphong.datphong', $phong->ma_phong) }}"
+                                                class="room-book-btn">
                                                 <i class="fas fa-calendar-check"></i> Đặt phòng ngay
                                             </a>
                                         @else
@@ -609,7 +717,7 @@
                                         @endif
                                     @else
                                         <a href="{{ route('login') }}" class="room-book-btn">
-                                            <i class="fas fa-right-to-bracket"></i> Đăng nhập để đặt phòng
+                                            <i class="fas fa-right-to-bracket"></i> Đặt phòng ngay
                                         </a>
                                     @endauth
                                 @else
@@ -625,7 +733,8 @@
                         <div class="room-card">
                             <div class="room-body text-center">
                                 <h5>Chưa có phòng để hiển thị</h5>
-                                <p class="text-muted mb-0" style="font-size:.9rem;">Vui lòng thêm dữ liệu phòng trong hệ thống để hiển thị tại đây.</p>
+                                <p class="text-muted mb-0" style="font-size:.9rem;">Vui lòng thêm dữ liệu phòng trong
+                                    hệ thống để hiển thị tại đây.</p>
                             </div>
                         </div>
                     </div>
@@ -638,8 +747,11 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-4 mb-lg-0">
-                    <span class="section-badge" style="background: rgba(129,140,248,.15); color: var(--primary-light);">Thông Tin Liên Hệ</span>
-                    <p class="text-secondary mb-0" style="color: #94a3b8 !important;">Đội ngũ nhân viên luôn sẵn sàng hỗ trợ bạn 24/7</p>
+                    <span class="section-badge"
+                        style="background: rgba(129,140,248,.15); color: var(--primary-light);">Thông Tin Liên
+                        Hệ</span>
+                    <p class="text-secondary mb-0" style="color: #94a3b8 !important;">Đội ngũ nhân viên luôn sẵn sàng
+                        hỗ trợ bạn 24/7</p>
                 </div>
                 <div class="col-lg-7">
                     <div class="row g-3">
@@ -666,7 +778,8 @@
                                 <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
                                 <div>
                                     <p class="label">Địa chỉ</p>
-                                    <p class="fw-semibold">Số 168, đường Nguyễn Văn Cừ nối dài, Phường Anh Bình,Quận Ninh Kiều, TP Cần Thơ.</p>
+                                    <p class="fw-semibold">Số 168, đường Nguyễn Văn Cừ nối dài, Phường Anh Bình,Quận
+                                        Ninh Kiều, TP Cần Thơ.</p>
                                 </div>
                             </div>
                         </div>
@@ -695,19 +808,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Navbar scroll effect
+        // khi người dùng cuộn trang xuống, navbar sẽ thay đổi giao diện để tăng khả năng đọc và tạo cảm giác hiện đại hơn
+        // khi cuộn xuống hơn 60px, navbar sẽ có nền trắng mờ, đổ bóng nhẹ và giảm padding để tạo hiệu ứng "dính" vào đầu trang
         window.addEventListener('scroll', function() {
             const nav = document.getElementById('topNavbar');
             nav.classList.toggle('scrolled', window.scrollY > 60);
         });
 
         // Smooth scroll
+        // tạo hiệu ứng cuộn mượt mà khi nhấp vào các liên kết điều hướng trong navbar
+        // đảm bảo rằng khi người dùng nhấp vào một liên kết như "Phòng", trang sẽ cuộn mượt mà đến phần tương ứng thay vì nhảy đột ngột
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (target) target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             });
         });
     </script>
 </body>
+
 </html>

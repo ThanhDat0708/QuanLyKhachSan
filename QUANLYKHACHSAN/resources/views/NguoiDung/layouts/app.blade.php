@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Grand Hotel')</title>
+    <title>@yield('title', ' DNC Hotel')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/nguoidung-app.css') }}">
     @yield('styles')
 </head>
+
 <body>
     <!-- Sidebar Backdrop (mobile) -->
     <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
@@ -19,7 +20,8 @@
     <aside class="app-sidebar" id="appSidebar">
         <div class="sidebar-brand">
             <a href="{{ route('home') }}">
-               <span><img src="{{ asset('images/logo.png') }}" alt="DNC Hotel" class="brand-logo" style="width:36px; height:36px; object-fit:contain; border-radius:8px;"></span>
+                <span><img src="{{ asset('images/logo.png') }}" alt="DNC Hotel" class="brand-logo"
+                        style="width:36px; height:36px; object-fit:contain; border-radius:8px;"></span>
                 <span class="brand-name">DNC Hotel</span>
             </a>
         </div>
@@ -109,4 +111,5 @@
     </script>
     @yield('scripts')
 </body>
+
 </html>
