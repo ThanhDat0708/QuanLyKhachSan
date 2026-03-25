@@ -16,7 +16,30 @@ use Carbon\Carbon;
 class NguoiDungDatPhongController extends Controller
 {
     /**
+     * Trang chủ người dùng với danh sách phòng nổi bật
+     */
+    public function home()
+    {
+        $trangThaiTrong = TrangThaiPhong::where('ten_trang_thai', 'like', '%trống%')
+            ->orWhere('ten_trang_thai', 'like', '%trong%')
+            ->first();
+        $maTrangThaiTrong = $trangThaiTrong?->ma_trang_thai;
+
+        $phongsNoiBat = Phong::with(['loaiPhong', 'trangThaiPhong'])
+            ->when($maTrangThaiTrong, function ($query) use ($maTrangThaiTrong) {
+                $query->orderByRaw('CASE WHEN ma_trang_thai = ? THEN 0 ELSE 1 END', [$maTrangThaiTrong]);
+            })
+            ->orderBy('gia_phong')
+            ->take(3)
+            ->get();
+
+        return view('NguoiDung.layouts.gdnguoidung', compact('phongsNoiBat', 'maTrangThaiTrong'));
+    }
+
+    /**
      * Danh sách phòng để đặt
+     * Có thể lọc theo loại phòng và mức giá
+     * Phòng trống sẽ được ưu tiên hiển thị lên đầu danh sách
      */
     public function danhSachPhong(Request $request)
     {
@@ -84,7 +107,7 @@ class NguoiDungDatPhongController extends Controller
             'ngay_tra_phong.required' => 'Vui lòng chọn ngày trả phòng.',
             'ngay_tra_phong.after' => 'Ngày trả phòng phải sau ngày nhận phòng.',
         ]);
-
+// nếu khách hàng chưa cập nhật thông tin cá nhân thì yêu cầu họ cập nhật trước khi đặt phòng
         $user = Auth::user();
         $khachhang = $user->khachHang;
 

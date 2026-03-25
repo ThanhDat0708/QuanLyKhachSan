@@ -16,9 +16,7 @@ use App\Http\Controllers\DoanhThuController;
 use App\Http\Controllers\NguoiDungDatPhongController;
 use App\Http\Controllers\QuanLyTaiKhoanController;
 
-Route::get('/', function () {
-    return view('NguoiDung.layouts.gdnguoidung');
-})->name('home');
+Route::get('/', [NguoiDungDatPhongController::class, 'home'])->name('home');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -37,9 +35,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Dashboard Người dùng
     Route::middleware(['role:nguoi_dung'])->group(function () {
-        Route::get('/nguoidung/home', function () {
-            return view('NguoiDung.layouts.gdnguoidung');
-        })->name('nguoidung.home');
+        Route::get('/nguoidung/home', [NguoiDungDatPhongController::class, 'home'])->name('nguoidung.home');
     }); 
 // ROUTES CHO ADMIN & LỄ TÂN (Quản lý hệ thống)
 Route::middleware(['role:admin,le_tan'])->prefix('/admin')->name('admin.')->group(function () {

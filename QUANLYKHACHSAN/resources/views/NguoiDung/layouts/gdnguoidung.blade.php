@@ -331,6 +331,37 @@
             gap: 5px;
         }
 
+        .room-book-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: #fff;
+            font-size: .9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .25s ease;
+        }
+
+        .room-book-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(79, 70, 229, .25);
+            color: #fff;
+        }
+
+        .room-book-btn.disabled {
+            background: #e2e8f0;
+            color: #64748b;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
         /* Service Cards */
         .service-card {
             text-align: center;
@@ -539,41 +570,66 @@
                 <p>Lựa chọn không gian phù hợp cho nhu cầu nghỉ dưỡng của bạn</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="room-card">
-                        <div class="room-img" style="background-image: url({{ asset('images/Vinpearl_cantho.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
-                            <span class="room-price">500.000đ / đêm</span>
-                        </div>
-                        <div class="room-body">
-                            <h5>Phòng View Thành Phố</h5>
-                            <p class="text-muted" style="font-size:.88rem;">Phòng này có một không gian rộng rãi với view thành phố tuyệt đẹp.</p>
-                            <div class="room-features">
+                @forelse(($phongsNoiBat ?? collect()) as $phong)
+                    @php
+                        $coTheDat = !empty($maTrangThaiTrong) && (int) $phong->ma_trang_thai === (int) $maTrangThaiTrong;
+                    @endphp
+                    <div class="col-md-6 col-xl-4">
+                        <div class="room-card h-100">
+                            <div class="room-img">
+                                @if($phong->anh_phong)
+                                    <img src="{{ asset('images/' . $phong->anh_phong) }}" alt="{{ $phong->ten_phong }}">
+                                @else
+                                    <div style="height:100%; background:linear-gradient(135deg, #667eea, #764ba2); display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-bed fa-3x" style="color:rgba(255,255,255,.35);"></i>
+                                    </div>
+                                @endif
+                                <span class="room-price">{{ number_format($phong->gia_phong, 0, ',', '.') }}đ / đêm</span>
+                            </div>
+                            <div class="room-body">
+                                <h5>{{ $phong->ten_phong }}</h5>
+                                <p class="text-muted mb-2" style="font-size:.88rem;">
+                                    {{ \Illuminate\Support\Str::limit($phong->mo_ta ?: 'Không gian nghỉ dưỡng tiện nghi, phù hợp cho kỳ nghỉ của bạn.', 95) }}
+                                </p>
+                                <div class="room-features">
+                                    <span><i class="fas fa-layer-group"></i> {{ $phong->loaiPhong->ten_loai_phong ?? 'N/A' }}</span>
+                                    <span><i class="fas fa-bed"></i> {{ $phong->so_luong_giuong ?? 0 }} giường</span>
+                                </div>
+
+                                @if($coTheDat)
+                                    @auth
+                                        @if(auth()->user()->vai_tro === 'nguoi_dung')
+                                            <a href="{{ route('nguoidung.datphong.datphong', $phong->ma_phong) }}" class="room-book-btn">
+                                                <i class="fas fa-calendar-check"></i> Đặt phòng ngay
+                                            </a>
+                                        @else
+                                            <span class="room-book-btn disabled">
+                                                <i class="fas fa-user-lock"></i> Chỉ khách hàng mới được đặt
+                                            </span>
+                                        @endif
+                                    @else
+                                        <a href="{{ route('login') }}" class="room-book-btn">
+                                            <i class="fas fa-right-to-bracket"></i> Đăng nhập để đặt phòng
+                                        </a>
+                                    @endauth
+                                @else
+                                    <span class="room-book-btn disabled">
+                                        <i class="fas fa-ban"></i> Phòng hiện không trống
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="room-card">
-                        <div class="room-img" style="background-image: url({{ asset('images/viewbien.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
-                            <span class="room-price">800.000đ / đêm</span>
-                        </div>
-                        <div class="room-body">
-                            <h5>Phòng View Biển</h5>
-                            <p class="text-muted" style="font-size:.88rem;">Khu vực phòng có tầm nhìn ra biển tuyệt đẹp, mang lại cảm giác thư giãn tuyệt vời.</p>
+                @empty
+                    <div class="col-12">
+                        <div class="room-card">
+                            <div class="room-body text-center">
+                                <h5>Chưa có phòng để hiển thị</h5>
+                                <p class="text-muted mb-0" style="font-size:.9rem;">Vui lòng thêm dữ liệu phòng trong hệ thống để hiển thị tại đây.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="room-card">
-                        <div class="room-img" style="background-image: url({{ asset('images/tongthong.jpg') }}), linear-gradient(135deg, #667eea, #764ba2);">
-                            <span class="room-price">1.500.000đ / đêm</span>
-                        </div>
-                        <div class="room-body">
-                            <h5>Phòng Tổng Thống</h5>
-                            <p class="text-muted" style="font-size:.88rem;">Phòng này có đầy đủ tiện nghi cho sự đẳng cấp và quyền lực cho những khách hàng cao cấp.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
