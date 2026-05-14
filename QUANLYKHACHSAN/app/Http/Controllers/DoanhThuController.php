@@ -15,13 +15,6 @@ class DoanhThuController extends Controller
      */
     public function index(Request $request)
     {
-        // Lọc theo loại: ngay, thang, nam
-        $loai = $request->get('loai', 'ngay');
-        $tuNgay = $request->get('tu_ngay');
-        $denNgay = $request->get('den_ngay');
-        $thang = $request->get('thang', Carbon::now()->month);
-        $nam = $request->get('nam', Carbon::now()->year);
-
         // Danh sách năm có hóa đơn
         $danhSachNam = HoaDon::selectRaw('YEAR(ngay_lap_hoa_don) as nam')
             ->distinct()
@@ -31,6 +24,15 @@ class DoanhThuController extends Controller
         if ($danhSachNam->isEmpty()) {
             $danhSachNam = collect([Carbon::now()->year]);
         }
+
+        // Lọc theo loại: ngay, thang, nam
+        $loai = $request->get('loai', 'ngay');
+        $tuNgay = $request->get('tu_ngay');
+        $denNgay = $request->get('den_ngay');
+        $thang = (int) $request->get('thang', Carbon::now()->month);
+        // Mặc định lấy năm mới nhất có dữ liệu để tránh rỗng khi năm hiện tại chưa có hóa đơn
+        $namMacDinh = (int) $danhSachNam->first();
+        $nam = (int) $request->get('nam', $namMacDinh);
 
         $doanhThu = collect();
         $tongDoanhThu = 0;
@@ -123,7 +125,7 @@ class DoanhThuController extends Controller
         $tongSoPhongDuocDat = (clone $datPhongBaseQuery)->distinct('ma_phong')->count('ma_phong');
         $tongSoKhachHangDatPhong = (clone $datPhongBaseQuery)->distinct('ma_khach_hang')->count('ma_khach_hang');
 
-        return view('admin.doanhthu.index', compact(
+        return view('Admin.DoanhThu.index', compact(
             'doanhThu', 'loai', 'tuNgay', 'denNgay', 'thang', 'nam',
             'danhSachNam', 'tongDoanhThu', 'tongTienPhong', 'tongTienDichVu',
             'baoCaoSoLuong', 'tongSoLuotDatPhong', 'tongSoPhongDuocDat',

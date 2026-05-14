@@ -74,6 +74,8 @@
                                             </select>
                                         </div>
                                         <input type="hidden" name="loai" value="thang">
+                                    @elseif ($loai === 'nam')
+                                        <input type="hidden" name="loai" value="nam">
                                     @endif
 
                                     <div class="col-md-2 mb-2">
