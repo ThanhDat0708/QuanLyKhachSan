@@ -2,16 +2,26 @@
 FROM php:8.2-apache
 
 # Cài đặt các dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
+# Cài đặt các dependencies cần thiết
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql \
-    && a2enmod rewrite
+    libzip-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cài đặt PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    zip
+
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
 # Cài đặt Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Cài đặt Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www/html
@@ -20,24 +30,28 @@ WORKDIR /var/www/html
 COPY . .
 
 # Cài đặt dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Copy Apache config
+# Configure Apache DocumentRoot
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
+
+# Add directory configuration
 RUN echo '<Directory /var/www/html/public>\n\
     Options Indexes FollowSymLinks\n\
     AllowOverride All\n\
     Require all granted\n\
-</Directory>' > /etc/apache2/sites-available/000-default.conf
+</Directory>' >> /etc/apache2/apache2.conf
 
 # Set Apache DocumentRoot
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
 # Fix permissions
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html/storage && \
+    chmod -R 755 /var/www/html/bootstrap/cache
 
 # Expose port
 EXPOSE 80
 
 # Start Apache
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+CMD ["apache2-foreground"]
